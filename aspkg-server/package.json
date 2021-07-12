@@ -1,0 +1,28 @@
+{
+  "name": "aspkg-server",
+  "version": "1.0.0",
+  "description": "AssemblyScript Packages server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aspkg/Website.git"
+  },
+  "keywords": [
+    "AssemblyScript",
+    "server"
+  ],
+  "author": "Jairus Tanaka + Contributors",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aspkg/Website/issues"
+  },
+  "homepage": "https://github.com/aspkg/Website#readme",
+  "dependencies": {
+    "blake3": "^2.1.4",
+    "fastify": "^3.19.0",
+    "fastify-helmet": "^5.3.2"
+  }
+}
