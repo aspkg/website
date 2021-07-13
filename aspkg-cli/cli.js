@@ -35,7 +35,7 @@ if (flags.includes('v') || flags.includes('version')) {
 if (commands.includes('publish')) {
     console.log(pkg)
     if (!pkg['aspkg']) {
-        console.log('No \'aspkg\' field found in package.json.\n{ "type": "git/npm", "platforms": ["NodeJS", "Browser", "WASM", "Lunatic", "Wasmtime", "Wasm3"]')
+        console.log('No \'aspkg\' field found in package.json.\n{ "type": "git/npm", "platforms": [] }')
     }
 }
 
@@ -45,6 +45,12 @@ if (commands.length == 0 && flags.length == 0) {
     console.log('Usage: aspkg [command] [flags]')
     console.log('-------')
     console.log('Publish a package:')
-    console.log('\taspkg publish')
+    console.log(' - aspkg publish\n')
+    console.log('Update a package')
+    console.log(' - aspkg update\n')
+    console.log('Login to aspkg')
+    console.log(' - aspkg login')
+    console.log('Logout of aspkg')
+    console.log(' - aspkg logout')
     kill()
 }
