@@ -1,11 +1,21 @@
 const { fastify } = require('fastify')
+const fastifySession = require('fastify-session');
+const fastifyCookie = require('fastify-cookie');
+const fastifyServerSesion = require('fastify-server-session')
 const axios = require('axios').default;
 const { Octokit } = require('@octokit/core')
 const fs = require('fs')
 const path = require('path')
-const kati = require('kati')
-const app = fastify()
+const kati = require('kati');
+const ms = require('ms');
 require('dotenv').config()
+
+const app = fastify()
+
+app.register(fastifyCookie, {
+    secret: 'abcdefghijklmnopqrstuvwxyz1234567890',
+    parseOptions: {}
+});
 const clientId = process.env.id;
 const clientSecret = process.env.secret;
 let octokit
@@ -37,6 +47,8 @@ app.get('/get-token', async (req, res) => {
 
 app.get('/login-success', async (req, res) => {
 
+    // TODO: Set access token in the sessionStorage as gh-token
+
     if (token == null) {
         const body = {
             client_id: clientId,
@@ -51,12 +63,14 @@ app.get('/login-success', async (req, res) => {
         octokit = new Octokit({ auth: token })
     }
 
+    res.setCookie('token', token)
+
     const user = await octokit.request('GET /user')
     console.log('Username: ', user.data.name)
     console.log('Avatar: ', user.data.avatar_url)
     console.log('Url: ', user.data.url)
-    res.send(`Logged in as ${user.data.name}`)
 
-    res.redirect(200, '/')
+    res.send('Logged in.')
+    // res.sessison.set('gh-token', token)
 
 });

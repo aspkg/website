@@ -1,18 +1,34 @@
-//import { Octokit } from "https://cdn.skypack.dev/@octokit/core";
+import { Octokit } from "https://cdn.skypack.dev/@octokit/core";
 
-onload = async function() {
-    console.log('Running!')
-    //sessionStorage.setItem('gh-token', '123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')
-    const token = sessionStorage.getItem('gh-token')
-    console.log("Token: ", token || 'uhh');
-    //const octokit = new Octokit({ auth: token });
-    const gh_username = document.getElementsByClassName("gh-username");
+onload = async function () {
+    console.log('Running...')
 
-    //const user = await octokit.request("GET /user");
+    if (getCookie('token')) {
+        console.log('Logged in.')
+        const token = getCookie('token')
+        console.log("Token: ", token || 'null');
+        const octokit = new Octokit({ auth: token });
+        const gh_username = document.getElementsByClassName("gh-username");
 
-    for (let i = 0; i < gh_username.length; i++) {
-        const elem = gh_username.item(i);
-        //elem.innerHTML = `<img src="${user.data.avatar_url}" style="width: 30px;padding-right: 0px;border-radius: 100%;margin-right: 12px;">${user.data.name}`;
+        const user = await octokit.request("GET /user");
+
+        for (let i = 0; i < gh_username.length; i++) {
+            const elem = gh_username.item(i);
+            elem.innerHTML = `<img src="${user.data.avatar_url}" style="width: 30px;padding-right: 0px;border-radius: 100%;margin-right: 12px;">${user.data.name}`;
+        }
+    } else {
+        console.log('Not Logged In')
+        const gh_username = document.getElementsByClassName("gh-username");
+        for (let i = 0; i < gh_username.length; i++) {
+            const elem = gh_username.item(i);
+            elem.innerHTML = `Login`;
+        }
     }
 
+}
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
 }
