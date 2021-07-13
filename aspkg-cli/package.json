@@ -1,7 +1,7 @@
 {
-  "name": "aspkg-server",
+  "name": "aspkg-cli",
   "version": "1.0.0",
-  "description": "AssemblyScript Packages Server",
+  "description": "AssemblyScript Packages CLI",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,7 +12,9 @@
   },
   "keywords": [
     "AssemblyScript",
-    "server"
+    "Package",
+    "aspkg",
+    "CLI"
   ],
   "author": "Jairus Tanaka + Contributors",
   "license": "MIT",
@@ -21,10 +23,6 @@
   },
   "homepage": "https://github.com/aspkg/Website#readme",
   "dependencies": {
-    "blake3": "^2.1.4",
-    "fastify": "^3.19.0",
-    "fastify-helmet": "^5.3.2",
-    "fastify-static": "^4.2.2",
-    "kati": "^0.4.0"
+    "colors": "^1.4.0"
   }
 }

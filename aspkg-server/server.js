@@ -20,7 +20,7 @@ app.get('/search', (req, res) => {
     const query = req.query['query']
     if (!query) {
         // Send an empty list of results
-        res.send(kati.stringify({}))
+        res.send(JSON.stringify({}))
         return
     }
 })
