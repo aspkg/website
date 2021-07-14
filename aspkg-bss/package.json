@@ -27,6 +27,7 @@
   "homepage": "https://github.com/aspkg/Website#readme",
   "dependencies": {
     "@assemblyscript/loader": "^0.19.7",
+    "as-console": "^6.0.0",
     "as-fetch": "^1.0.8",
     "asdom": "^0.1.13",
     "assemblyscript": "^0.19.7"

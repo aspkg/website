@@ -1,4 +1,4 @@
-//import { Octokit } from "https://cdn.skypack.dev/@octokit/core";
+import { Octokit } from "https://cdn.skypack.dev/@octokit/core";
 
 // I keep commenting out Octokit because I run offline most of the time...
 
@@ -6,15 +6,15 @@ onload = async function () {
     console.log('Running Aspkg...')
 
     console.log(document.cookie)
-    
+
     if (getCookie('token')) {
         console.log('Logged in.')
         const token = getCookie('token')
         console.log("Token: ", token);
-        //const octokit = new Octokit({ auth: token });
+        const octokit = new Octokit({ auth: token });
         const gh_username = document.getElementsByClassName("gh-username");
 
-        //const user = await octokit.request("GET /user");
+        const user = await octokit.request("GET /user");
 
         const account_nav = gh_username.item(0)
 

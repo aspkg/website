@@ -3,6 +3,8 @@ const axios = require('axios').default;
 const { fastify } = require('fastify')
 const { Octokit } = require('@octokit/core')
 const fs = require('fs')
+const localtunnel = require('localtunnel')
+const closeWithGrace = require('close-with-grace')
 // Plugins
 const fastifyCookie = require('fastify-cookie');
 const fastifySession = require('fastify-session');
@@ -28,7 +30,24 @@ console.log(clientId)
 
 console.log(clientSecret)
 
-app.listen(3000)
+app.listen(3000, async (err, address) => {
+
+    try {
+        const tunnel = await localtunnel({ port: 3000, subdomain: 'aspkg'})
+        console.log('Listening on: ', tunnel.url)
+        closeWithGrace({ delay: 1000 }, async function () {
+            console.log('Closing...')
+            tunnel.close()
+            console.log('Done.')
+        })
+        app.addHook('onClose', () => {
+            tunnel.close()
+        })
+    } catch {
+        console.log('Listening on: ', address)
+    }
+
+})
 // Static file serve
 app.register(require('fastify-static'), {
     root: path.join(__dirname, '../aspkg-bss/assets/'),
@@ -36,7 +55,7 @@ app.register(require('fastify-static'), {
 })
 
 app.get('/', async (req, res) => {
-    if (!req.cookies['token'] && req.query.code) {
+    if (req.query.code && req.query.token == null) {
         const body = {
             client_id: clientId,
             client_secret: clientSecret,
@@ -49,15 +68,11 @@ app.get('/', async (req, res) => {
             }
         };
 
-        const token = '6beeb623404b935645e4212739aeed7885741d11'//(await axios.post(`https://github.com/login/oauth/access_token`, body, opts)).data.access_token
-        console.log(token)
-        res.setCookie('token', token, {
-            path: '/',
-            signed: true,
-            secure: false,
-            httpOnly: true,
-            sameSite: 'strict'
-        })
+        const token = (await axios.post(`https://github.com/login/oauth/access_token`, body, opts)).data.access_token
+
+        console.log('Token: ', token)
+
+        res.setCookie('token', token)
     }
     res.type('html')
     res.send(fs.readFileSync('../aspkg-bss/index.html'))
