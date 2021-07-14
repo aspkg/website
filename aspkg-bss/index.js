@@ -1,12 +1,12 @@
 import { Octokit } from "https://cdn.skypack.dev/@octokit/core";
 
 onload = async function () {
-    console.log('Running...')
+    console.log('Running Aspkg...')
 
     if (getCookie('token')) {
         console.log('Logged in.')
         const token = getCookie('token')
-        console.log("Token: ", token || 'null');
+        console.log("Token: ", token);
         const octokit = new Octokit({ auth: token });
         const gh_username = document.getElementsByClassName("gh-username");
 
@@ -18,11 +18,6 @@ onload = async function () {
         }
     } else {
         console.log('Not Logged In')
-        const gh_username = document.getElementsByClassName("gh-username");
-        for (let i = 0; i < gh_username.length; i++) {
-            const elem = gh_username.item(i);
-            elem.innerHTML = `Login`;
-        }
     }
 
 }
