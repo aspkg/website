@@ -49,9 +49,15 @@ app.get('/', async (req, res) => {
             }
         };
 
-        const token = (await axios.post(`https://github.com/login/oauth/access_token`, body, opts)).data.access_token
+        const token = '6beeb623404b935645e4212739aeed7885741d11'//(await axios.post(`https://github.com/login/oauth/access_token`, body, opts)).data.access_token
         console.log(token)
-        res.setCookie('token', token)
+        res.setCookie('token', token, {
+            path: '/',
+            signed: true,
+            secure: false,
+            httpOnly: true,
+            sameSite: 'strict'
+        })
     }
     res.type('html')
     res.send(fs.readFileSync('../aspkg-bss/index.html'))
@@ -70,6 +76,11 @@ app.get('/404', async (req, res) => {
 app.get('/index.js', async (req, res) => {
     res.type('application/javascript')
     res.send(fs.readFileSync('../aspkg-bss/index.js'))
+})
+
+app.get('/index.css', async (req, res) => {
+    res.type('css')
+    res.send(fs.readFileSync('../aspkg-bss/index.css'))
 })
 
 // Package Searching
