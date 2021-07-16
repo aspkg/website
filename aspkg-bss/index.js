@@ -84,6 +84,8 @@ async function runPackage() {
 
     pkgIssues.innerText = Object.keys(issuesData).length
 
+    pkgIssues.setAttribute('href', `${pkg['repository']['url'].replace('git+', '').replace('.git', '').toLowerCase()}/issues`)
+
     if (pkg['aspkg']['type'] === "git") {
         pkgInstall.innerText = ` npm i ${pkg['repository']['url'].replace('git+', '').replace('https://', '').replace('github.com/', '').replace('.git', '').toLowerCase()} `
         pkgGitHubLink.innerText = `${pkg['repository']['url'].replace('git+', '').replace('https://', '').replace('github.com/', '').replace('.git', '').toLowerCase()}`
