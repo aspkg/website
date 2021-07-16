@@ -23,6 +23,7 @@
   "dependencies": {
     "@octokit/core": "^3.5.1",
     "as-fetch": "^1.0.8",
+    "asdom": "^0.1.13",
     "axios": "^0.21.1",
     "blake3": "^2.1.4",
     "close-with-grace": "^1.1.0",
