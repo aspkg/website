@@ -6,7 +6,7 @@ onload = function launch() {
     console.log('Running Aspkg...')
     console.log('Pathname: ', location.pathname)
     if (location.pathname === '/') {
-        runHome()
+        runLogin()
     } else if (location.pathname === '/package') {
         runPackage()
         runLogin()
