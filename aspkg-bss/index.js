@@ -9,9 +9,11 @@ onload = function launch() {
         runHome()
     } else if (location.pathname === '/package') {
         runPackage()
+        runLogin()
     }
 }
-async function runHome() {
+
+async function runLogin() {
 
     console.log(document.cookie)
 
@@ -57,22 +59,6 @@ async function runHome() {
 }
 
 async function runPackage() {
-    console.log('Running Aspkg...')
-
-    console.log(document.cookie)
-
-    if (getCookie('token')) {
-        console.log('Logged in.')
-        const token = getCookie('token')
-        console.log("Token: ", token);
-        const octokit = new Octokit({ auth: token });
-        const gh_username = document.getElementsByClassName("gh-username");
-
-        const user = await octokit.request("GET /user");
-
-    } else {
-        console.log('Not Logged In')
-    }
 
     const pkgData = await (await fetch(`/api-get${location.search}`)).json()
 
@@ -92,6 +78,8 @@ async function runPackage() {
 
     const pkgDependencies = document.getElementById('pkg-dependencies')
 
+    const pkgDevDependencies = document.getElementById('pkg-dev-dependencies')
+
     const pkgLicense = document.getElementById('pkg-license')
 
     const pkgReadme = document.getElementById('pkg-readme')
@@ -106,6 +94,9 @@ async function runPackage() {
         pkgInstall.innerText = ` npm i ${pkg['repository']['url'].replace('git+', '').replace('https://', '').replace('github.com/', '').replace('.git', '').toLowerCase()} `
         pkgGitHubLink.innerText = `${pkg['repository']['url'].replace('git+', '').replace('https://', '').replace('github.com/', '').replace('.git', '').toLowerCase()}`
         pkgGitHubLink.setAttribute('href', pkg['repository']['url'].replace('git+', '').replace('.git', '').toLowerCase())
+        pkgInstall.onclick = () => {
+            navigator.clipboard.writeText(`npm i ${pkg['repository']['url'].replace('git+', '').replace('https://', '').replace('github.com/', '').replace('.git', '').toLowerCase()}`)
+        }
     } else if (pkg['aspkg']['type'] === "npm") {
         pkgInstall.innerText = ` npm i ${pkg['name'].toLowerCase()} `
         if (pkg['repository'] && pkg['repository']['type'] === 'git') {
@@ -115,9 +106,16 @@ async function runPackage() {
             pkgGitHubLink.innerText = 'NPM'
             pkgGitHubLink.setAttribute('href', `https://npmjs.com/package${pkg['name']}/`.toLowerCase())
         }
+        pkgInstall.onclick = () => {
+            navigator.clipboard.writeText(`npm i ${pkg['name'].toLowerCase()}`)
+        }
     }
 
-    pkgDependencies.innerText = Object.keys(pkg['dependencies']).length
+    if (pkg['dependencies']) pkgDependencies.innerText = Object.keys(pkg['dependencies']).length || 0
+    else pkgDependencies.innerText = 0
+
+    if (pkg['devDependencies']) pkgDevDependencies.innerText = Object.keys(pkg['devDependencies']).length || 0
+    else pkgDevDependencies.innerText = 0
 
     pkgLicense.innerText = pkg['license']
 

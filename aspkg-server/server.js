@@ -40,21 +40,15 @@ console.log(clientSecret)
 
 app.listen(3000, async (err, address) => {
 
-    try {
-        const tunnel = await localtunnel({ port: 3000, subdomain: 'aspkg'})
-        console.log('Listening on: ', tunnel.url)
-        closeWithGrace({ delay: 1000 }, async function () {
-            console.log('Closing...')
-            tunnel.close()
-            console.log('Done.')
-        })
-        app.addHook('onClose', () => {
-            tunnel.close()
-        })
-    } catch {
-        console.log('Listening on: ', address)
-    }
-
+    /*closeWithGrace({ delay: 1000 }, async function () {
+        console.log('Closing...')
+        tunnel.close()
+        console.log('Done.')
+    })
+    app.addHook('onClose', () => {
+        tunnel.close()
+    })*/
+    console.log('Listening on: ', address)
 })
 // Static file serve
 app.register(require('fastify-static'), {
@@ -86,27 +80,27 @@ app.get('/', async (req, res) => {
     res.send(fs.readFileSync('../aspkg-bss/index.html'))
 })
 
-app.get('/package', async  (req, res) => {
+app.get('/package', async (req, res) => {
     res.type('html')
     res.send(fs.readFileSync('../aspkg-bss/package.html'))
 })
 
-app.get('/404', async  (req, res) => {
+app.get('/404', async (req, res) => {
     res.type('html')
     res.send(fs.readFileSync('../aspkg-bss/404.html'))
 })
 
-app.get('/index.js', async  (req, res) => {
+app.get('/index.js', async (req, res) => {
     res.type('application/javascript')
     res.send(fs.readFileSync('../aspkg-bss/index.js'))
 })
 
-app.get('/index.css', async  (req, res) => {
+app.get('/index.css', async (req, res) => {
     res.type('css')
     res.send(fs.readFileSync('../aspkg-bss/index.css'))
 })
 
-app.get('/package.js', async  (req, res) => {
+app.get('/package.js', async (req, res) => {
     res.type('application/javascript')
     res.send(fs.readFileSync('../aspkg-bss/package.js'))
 })
@@ -119,6 +113,7 @@ app.get('/search', async (req, res) => {
         res.send(JSON.stringify({}))
         return
     }
+    res.send(await db.search(req.query['query']))
 })
 
 app.get('/login', async (req, res) => {
