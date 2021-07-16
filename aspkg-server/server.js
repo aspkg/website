@@ -5,10 +5,18 @@ const { Octokit } = require('@octokit/core')
 const fs = require('fs')
 const localtunnel = require('localtunnel')
 const closeWithGrace = require('close-with-grace')
+const ReziDB = require('rezidb')
 // Plugins
 const fastifyCookie = require('fastify-cookie');
-const fastifySession = require('fastify-session');
-const fastifyServerSesion = require('fastify-server-session')
+// Database
+const db = new ReziDB({
+    name: 'aspkg-db-1',
+    path: './database',
+    cluster: false,
+    cache: { maxSize: 1000 }
+})
+
+//db.clear()
 
 // Import .env
 require('dotenv').config()
@@ -78,28 +86,33 @@ app.get('/', async (req, res) => {
     res.send(fs.readFileSync('../aspkg-bss/index.html'))
 })
 
-app.get('/package', async (req, res) => {
+app.get('/package', async  (req, res) => {
     res.type('html')
     res.send(fs.readFileSync('../aspkg-bss/package.html'))
 })
 
-app.get('/404', async (req, res) => {
+app.get('/404', async  (req, res) => {
     res.type('html')
     res.send(fs.readFileSync('../aspkg-bss/404.html'))
 })
 
-app.get('/index.js', async (req, res) => {
+app.get('/index.js', async  (req, res) => {
     res.type('application/javascript')
     res.send(fs.readFileSync('../aspkg-bss/index.js'))
 })
 
-app.get('/index.css', async (req, res) => {
+app.get('/index.css', async  (req, res) => {
     res.type('css')
     res.send(fs.readFileSync('../aspkg-bss/index.css'))
 })
 
+app.get('/package.js', async  (req, res) => {
+    res.type('application/javascript')
+    res.send(fs.readFileSync('../aspkg-bss/package.js'))
+})
+
 // Package Searching
-app.get('/search', (req, res) => {
+app.get('/search', async (req, res) => {
     const query = req.query['query']
     if (!query) {
         // Send an empty list of results
@@ -108,12 +121,39 @@ app.get('/search', (req, res) => {
     }
 })
 
-app.get('/login', (req, res) => {
+app.get('/login', async (req, res) => {
     res.redirect(`https://github.com/login/oauth/authorize?client_id=${clientId}`);
 });
 
-app.get('/api-logout', (req, res) => {
+app.get('/api-logout', async (req, res) => {
     // Erasing token logs the user out.
     res.clearCookie('token')
     res.send('Logged out.')
+})
+
+app.post('/api-publish', async (req, res) => {
+    const body = req.body
+    console.log('Body: ', body)
+    await db.set(body['package']['name'].toString(), JSON.stringify(body))
+    res.code(200)
+    res.send('Published')
+})
+
+app.get('/api-search', async (req, res) => {
+    if (!req.query['query']) res.send([])
+    res.send(await db.search(req.query['query']), req.query.limit || 5)
+})
+
+app.get('/api-get', async (req, res) => {
+    if (!req.query['name']) return res.send({})
+    res.send(await db.get(req.query['name']))
+})
+
+app.get('/api-list', async (req, res) => {
+    res.send(await db.toJSON())
+})
+
+app.addHook('onError', (req, res, err, next) => {
+    console.log(err)
+    next()
 })

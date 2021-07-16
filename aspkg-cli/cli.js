@@ -4,6 +4,10 @@ const CLIversion = require('./package.json').version
 
 const path = require('path')
 
+const got = require('got').default
+
+const fs = require('fs')
+
 const pkg = require(path.join(process.cwd(), '/package.json'))
 
 const args = process.argv.slice(2, process.argv.length)
@@ -37,6 +41,13 @@ if (commands.includes('publish')) {
     if (!pkg['aspkg']) {
         console.log('No \'aspkg\' field found in package.json.\n{ "type": "git/npm", "platforms": [] }')
     }
+    got.post('http://localhost:3000/api-publish', {
+        json: {
+            package: pkg,
+            readme: fs.readFileSync(path.join(process.cwd(), '/README.md')).toString()
+        },
+        responseType: 'text'
+    })
 }
 
 if (commands.length == 0 && flags.length == 0) {
