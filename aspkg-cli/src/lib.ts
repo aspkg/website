@@ -1,6 +1,6 @@
 import { homedir } from "os";
 import { join } from "path";
-import { readFileSync, writeFileSync } from "fs";
+import { readFile, writeFile } from "fs/promises";
 import { AlreadyAuthenticatedException } from "./errors";
 
 /**
@@ -14,21 +14,17 @@ interface Configuration {
 
 const aspkgrcPath = join(homedir(), ".aspkgrc");
 
-const config: Configuration = (() => {
-  try {
-    return JSON.parse(readFileSync(aspkgrcPath, "utf-8"));
-  } catch {
-    writeFileSync(aspkgrcPath, "{}");
-    return {};
-  }
-})();
+const config: Promise<Configuration> = readFile(aspkgrcPath, "utf-8")
+  .then<Configuration>((r) => JSON.parse(r))
+  .catch(() => writeFile(aspkgrcPath, "{}").then<Configuration>(() => ({})));
 
 /**
  * Check whether the current user is authenticated.
- * @returns {boolean} a boolean that represents whether or not the current user is authenticated.
+ * @returns {Promise<boolean>} a Promise that represents whether or not the current user is authenticated.
+ * @async
  */
-export function authenticated(): boolean {
-  return !!config.accessToken;
+export async function authenticated(): Promise<boolean> {
+  return !!(await config).accessToken;
 }
 
 /**
@@ -37,11 +33,10 @@ export function authenticated(): boolean {
  * @returns {Promise<boolean>} a Promise that represents whether or not authentication was successful.
  * @throws {AlreadyAuthenticatedException}
  */
-export function login(): Promise<boolean> {
-  return new Promise((resolve) => {
-    if (authenticated()) {
-      throw new AlreadyAuthenticatedException();
-    }
-    throw "Unimplemented.";
-  });
+export async function login(): Promise<boolean> {
+  const isAuthenticated = await authenticated();
+  if (isAuthenticated) {
+    throw new AlreadyAuthenticatedException();
+  }
+  throw "Unimplemented.";
 }
