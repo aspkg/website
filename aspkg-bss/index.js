@@ -1,7 +1,5 @@
 import { Octokit } from "https://cdn.skypack.dev/@octokit/core";
 
-// I keep commenting out Octokit because I run offline most of the time...
-
 onload = function launch() {
     console.log('Running Aspkg...')
     console.log('Pathname: ', location.pathname)

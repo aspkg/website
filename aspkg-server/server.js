@@ -1,10 +1,7 @@
 const path = require('path')
 const axios = require('axios').default;
 const { fastify } = require('fastify')
-const { Octokit } = require('@octokit/core')
 const fs = require('fs')
-const localtunnel = require('localtunnel')
-const closeWithGrace = require('close-with-grace')
 const ReziDB = require('rezidb')
 // Plugins
 const fastifyCookie = require('fastify-cookie');
