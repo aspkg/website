@@ -1,6 +1,7 @@
 # AssemblyScript Packages Website
 
 # Setting up
+
 1. Install Bootstrap Studio (https://bootstrapstudio.io/)
 2. DM/Issue me for a license key
 3. Open up `AssemblyScript Packages.bsdesign` in BSS
@@ -25,6 +26,7 @@
 `POST /api-remove` Remove a package
 
 # Pages-to-make
+
 - Login
 - Logout
 - Profile
