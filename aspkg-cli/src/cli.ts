@@ -3,6 +3,11 @@ import { hideBin } from "yargs/helpers";
 import { AlreadyAuthenticatedException } from "./errors";
 import { login } from "./lib";
 
+/**
+ * The main Command Line Interface.
+ * @module cli
+ */
+
 yargs(hideBin(process.argv))
   .scriptName("aspkg")
   .usage("Usage: $0 <command> [options]")

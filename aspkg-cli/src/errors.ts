@@ -1,4 +1,9 @@
 /**
+ * Contains custom error classes.
+ * @module errors
+ */
+
+/**
  * Thrown when attempting to call the login function while already authenticated.
  * @see {module:lib.login}
  */
