@@ -2,3 +2,4 @@
 export * from '../node_modules/asdom/assembly/glue'
 
 import './elements/NavBar'
+import './elements/TheFooter'

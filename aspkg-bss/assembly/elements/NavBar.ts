@@ -1,25 +1,9 @@
-import { customElements, HTMLElement, ShadowRootInit } from '../../node_modules/asdom/assembly/index'
+import { customElements } from '../../node_modules/asdom/assembly/index'
+import { AspkgElement } from './AspkgElement'
 
-abstract class ASPKGElement extends HTMLElement {
-    /** Subclasses should set this to an initial value of false if they wish to skip having a ShadowRoot. */
-    protected useShadow: boolean = true
+class NavBar extends AspkgElement {
+    static observedAttributes: string[] = []
 
-    connectedCallback(): void {
-        const tmpl = this.template()
-
-        if (this.useShadow) {
-            let root = this.shadowRoot
-            if (!root) root = this.attachShadow({ mode: 'open' } as ShadowRootInit)
-            root.innerHTML = tmpl
-        } else {
-            this.innerHTML = tmpl
-        }
-    }
-
-    abstract template(): string
-}
-
-class NavBar extends ASPKGElement {
     constructor() {
         super()
         this.useShadow = false
@@ -112,4 +96,4 @@ class NavBar extends ASPKGElement {
     }
 }
 
-customElements.define('nav-bar', () => new NavBar(), [])
+customElements.define('nav-bar', () => new NavBar(), NavBar.observedAttributes)
