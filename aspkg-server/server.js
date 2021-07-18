@@ -1,16 +1,16 @@
 const path = require('path')
-const axios = require('axios').default;
+const axios = require('axios').default
 const { fastify } = require('fastify')
 const fs = require('fs')
 const ReziDB = require('rezidb')
 // Plugins
-const fastifyCookie = require('fastify-cookie');
+const fastifyCookie = require('fastify-cookie')
 // Database
 const db = new ReziDB({
     name: 'aspkg-db-1',
     path: './database',
     cluster: false,
-    cache: { maxSize: 1000 }
+    cache: { maxSize: 1000 },
 })
 
 //db.clear()
@@ -24,19 +24,18 @@ const app = fastify()
 // Set cookie handler
 app.register(fastifyCookie, {
     secret: process.env.cookieSecret,
-    parseOptions: {}
-});
+    parseOptions: {},
+})
 
 // Get secrets
-const clientId = process.env.id;
-const clientSecret = process.env.secret;
+const clientId = process.env.id
+const clientSecret = process.env.secret
 
 console.log(clientId)
 
 console.log(clientSecret)
 
 app.listen(3000, async (err, address) => {
-
     /*closeWithGrace({ delay: 1000 }, async function () {
         console.log('Closing...')
         tunnel.close()
@@ -51,7 +50,7 @@ app.listen(3000, async (err, address) => {
 // Static file serve
 app.register(require('fastify-static'), {
     root: path.join(__dirname, '../aspkg-bss/'),
-    prefix: '/'
+    prefix: '/',
 })
 
 app.get('/', async (req, res) => {
@@ -59,16 +58,18 @@ app.get('/', async (req, res) => {
         const body = {
             client_id: clientId,
             client_secret: clientSecret,
-            code: req.query.code
-        };
+            code: req.query.code,
+        }
 
         const opts = {
             headers: {
-                accept: 'application/json'
-            }
-        };
+                accept: 'application/json',
+            },
+        }
 
-        const token = (await axios.post(`https://github.com/login/oauth/access_token`, body, opts)).data.access_token
+        const url = `https://github.com/login/oauth/access_token`
+        const res = await axios.post(url, body, opts)
+        const token = res.data.access_token
 
         console.log('Token: ', token)
 
@@ -100,8 +101,10 @@ app.get('/search', async (req, res) => {
 })
 
 app.get('/login', async (req, res) => {
-    res.redirect(`https://github.com/login/oauth/authorize?client_id=${clientId}`);
-});
+    res.redirect(
+        `https://github.com/login/oauth/authorize?client_id=${clientId}`
+    )
+})
 
 app.get('/api-logout', async (req, res) => {
     // Erasing token logs the user out.

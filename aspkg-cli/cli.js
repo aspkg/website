@@ -39,14 +39,18 @@ if (flags.includes('v') || flags.includes('version')) {
 if (commands.includes('publish')) {
     console.log(pkg)
     if (!pkg['aspkg']) {
-        console.log('No \'aspkg\' field found in package.json.\n{ "type": "git/npm", "platforms": [] }')
+        console.log(
+            'No \'aspkg\' field found in package.json.\n{ "type": "git/npm", "platforms": [] }'
+        )
     }
     got.post('http://localhost:3000/api-publish', {
         json: {
             package: pkg,
-            readme: fs.readFileSync(path.join(process.cwd(), '/README.md')).toString()
+            readme: fs
+                .readFileSync(path.join(process.cwd(), '/README.md'))
+                .toString(),
         },
-        responseType: 'text'
+        responseType: 'text',
     })
 }
 
