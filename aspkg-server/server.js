@@ -47,10 +47,11 @@ app.listen(3000, async (err, address) => {
     })*/
     console.log('Listening on: ', address)
 })
+
 // Static file serve
 app.register(require('fastify-static'), {
-    root: path.join(__dirname, '../aspkg-bss/assets/'),
-    prefix: '/assets/'
+    root: path.join(__dirname, '../aspkg-bss/'),
+    prefix: '/'
 })
 
 app.get('/', async (req, res) => {
@@ -85,21 +86,6 @@ app.get('/package', async (req, res) => {
 app.get('/404', async (req, res) => {
     res.type('html')
     res.send(await fs.promises.readFile('../aspkg-bss/404.html'))
-})
-
-app.get('/index.js', async (req, res) => {
-    res.type('application/javascript')
-    res.send(await fs.promises.readFile('../aspkg-bss/index.js'))
-})
-
-app.get('/index.css', async (req, res) => {
-    res.type('css')
-    res.send(await fs.promises.readFile('../aspkg-bss/index.css'))
-})
-
-app.get('/package.js', async (req, res) => {
-    res.type('application/javascript')
-    res.send(await fs.promises.readFile('../aspkg-bss/package.js'))
 })
 
 // Package Searching
