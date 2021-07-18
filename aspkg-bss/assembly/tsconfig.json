@@ -1,6 +1,9 @@
 {
-  "extends": "assemblyscript/std/assembly.json",
-  "include": [
-    "./**/*.ts"
-  ]
+    "extends": "assemblyscript/std/assembly.json",
+    "include": ["./**/*.ts"],
+    "compilerOptions": {
+        "target": "es5",
+        "module": "esnext",
+        "moduleResolution": "node"
+    }
 }

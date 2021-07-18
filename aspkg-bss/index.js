@@ -1,14 +1,46 @@
 import { Octokit } from 'https://cdn.skypack.dev/@octokit/core'
 
-onload = function launch() {
+import { Asdom } from './node_modules/asdom/glue/index.js'
+import { ECMAssembly } from './node_modules/ecmassembly/index.js'
+import { instantiate } from './node_modules/@assemblyscript/loader/index.js'
+
+main()
+
+async function main() {
+    await runASModule()
+
     console.log('Running Aspkg...')
     console.log('Pathname: ', location.pathname)
+
     if (location.pathname === '/') {
         runLogin()
     } else if (location.pathname === '/package') {
         runPackage()
         runLogin()
     }
+}
+
+async function runASModule() {
+    // Create an Asdom instance that has the glue code for DOM APIs.
+    const asdom = new Asdom()
+
+    // Create an ECMAssembly instance that has glue code for requestAnimationFrame.
+    const ecmassembly = new ECMAssembly()
+
+    const { exports } = await instantiate(fetch('./build/untouched.wasm'), {
+        // Pass the glue code wasmImports in.
+        ...asdom.wasmImports,
+        ...ecmassembly.wasmImports,
+
+        // ...Add any other imports your apps needs as usual...
+    })
+
+    // Before you do anything, pass the the Wasm module's exports to the glue code instances.
+    asdom.wasmExports = exports
+    ecmassembly.wasmExports = exports
+
+    // Now execute the Wasm module. Make the Wasm module was compiled with `--explicitStart`.
+    exports._start()
 }
 
 async function runLogin() {
@@ -74,18 +106,13 @@ async function runPackage() {
 
     pkgVersion.innerText = `v${pkg.version}`
 
-    const issuesData = await (
-        await fetch('https://api.github.com/repos/aspkg/as-json/issues')
-    ).json()
+    const issuesData = await (await fetch('https://api.github.com/repos/aspkg/as-json/issues')).json()
 
     pkgIssues.innerText = Object.keys(issuesData).length
 
     pkgIssues.setAttribute(
         'href',
-        `${pkg['repository']['url']
-            .replace('git+', '')
-            .replace('.git', '')
-            .toLowerCase()}/issues`
+        `${pkg['repository']['url'].replace('git+', '').replace('.git', '').toLowerCase()}/issues`
     )
 
     if (pkg['aspkg']['type'] === 'git') {
@@ -103,10 +130,7 @@ async function runPackage() {
             .toLowerCase()}`
         pkgGitHubLink.setAttribute(
             'href',
-            pkg['repository']['url']
-                .replace('git+', '')
-                .replace('.git', '')
-                .toLowerCase()
+            pkg['repository']['url'].replace('git+', '').replace('.git', '').toLowerCase()
         )
         pkgInstall.onclick = () => {
             navigator.clipboard.writeText(
@@ -129,30 +153,21 @@ async function runPackage() {
                 .toLowerCase()}`
             pkgGitHubLink.setAttribute(
                 'href',
-                pkg['repository']['url']
-                    .replace('git+', '')
-                    .replace('.git', '')
-                    .toLowerCase()
+                pkg['repository']['url'].replace('git+', '').replace('.git', '').toLowerCase()
             )
         } else {
             pkgGitHubLink.innerText = 'NPM'
-            pkgGitHubLink.setAttribute(
-                'href',
-                `https://npmjs.com/package${pkg['name']}/`.toLowerCase()
-            )
+            pkgGitHubLink.setAttribute('href', `https://npmjs.com/package${pkg['name']}/`.toLowerCase())
         }
         pkgInstall.onclick = () => {
             navigator.clipboard.writeText(`npm i ${pkg['name'].toLowerCase()}`)
         }
     }
 
-    if (pkg['dependencies'])
-        pkgDependencies.innerText = Object.keys(pkg['dependencies']).length || 0
+    if (pkg['dependencies']) pkgDependencies.innerText = Object.keys(pkg['dependencies']).length || 0
     else pkgDependencies.innerText = 0
 
-    if (pkg['devDependencies'])
-        pkgDevDependencies.innerText =
-            Object.keys(pkg['devDependencies']).length || 0
+    if (pkg['devDependencies']) pkgDevDependencies.innerText = Object.keys(pkg['devDependencies']).length || 0
     else pkgDevDependencies.innerText = 0
 
     pkgLicense.innerText = pkg['license']

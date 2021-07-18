@@ -3,4 +3,5 @@ module.exports = {
     useTabs: false, // I like tabs, but BSS outputs spaces.
     singleQuote: true,
     semi: false,
+    printWidth: 120,
 }
