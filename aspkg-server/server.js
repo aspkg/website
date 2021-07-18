@@ -74,32 +74,32 @@ app.get('/', async (req, res) => {
         res.setCookie('token', token)
     }
     res.type('html')
-    res.send(fs.readFileSync('../aspkg-bss/index.html'))
+    res.send(await fs.promises.readFile('../aspkg-bss/index.html'))
 })
 
 app.get('/package', async (req, res) => {
     res.type('html')
-    res.send(fs.readFileSync('../aspkg-bss/package.html'))
+    res.send(await fs.promises.readFile('../aspkg-bss/package.html'))
 })
 
 app.get('/404', async (req, res) => {
     res.type('html')
-    res.send(fs.readFileSync('../aspkg-bss/404.html'))
+    res.send(await fs.promises.readFile('../aspkg-bss/404.html'))
 })
 
 app.get('/index.js', async (req, res) => {
     res.type('application/javascript')
-    res.send(fs.readFileSync('../aspkg-bss/index.js'))
+    res.send(await fs.promises.readFile('../aspkg-bss/index.js'))
 })
 
 app.get('/index.css', async (req, res) => {
     res.type('css')
-    res.send(fs.readFileSync('../aspkg-bss/index.css'))
+    res.send(await fs.promises.readFile('../aspkg-bss/index.css'))
 })
 
 app.get('/package.js', async (req, res) => {
     res.type('application/javascript')
-    res.send(fs.readFileSync('../aspkg-bss/package.js'))
+    res.send(await fs.promises.readFile('../aspkg-bss/package.js'))
 })
 
 // Package Searching
