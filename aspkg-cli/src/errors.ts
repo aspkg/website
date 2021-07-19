@@ -5,7 +5,6 @@
 
 /**
  * Thrown when attempting to log in while already authenticated.
- * @see {module:lib.login}
  */
 export class AlreadyAuthenticatedException extends Error {
     constructor() {
@@ -16,7 +15,6 @@ export class AlreadyAuthenticatedException extends Error {
 
 /**
  * Thrown when attempting to log out while unauthenticated.
- * @see {module:lib.logout}
  */
 export class NotAuthenticatedException extends Error {
     constructor() {

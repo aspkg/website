@@ -57,7 +57,7 @@ export async function authenticated(): Promise<boolean> {
  * Prompts the user to log in.
  * @async
  * @returns {Promise<void>} a Promise that rejects when authorization was unsuccessful.
- * @throws {AlreadyAuthenticatedException}
+ * @throws {@link AlreadyAuthenticatedException}
  */
 export async function login(codeCallback: (code: string, url: string) => void): Promise<void> {
     const isAuthenticated = await authenticated()
@@ -149,7 +149,7 @@ export async function login(codeCallback: (code: string, url: string) => void): 
 /**
  * Logs the current user out of the registry.
  * @remarks This function does not await {@link waitForLocks}
- * @throws {NotAuthenticatedException}
+ * @throws {@link NotAuthenticatedException}
  * @async
  */
 export async function logout(): Promise<void> {
