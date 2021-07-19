@@ -1,12 +1,31 @@
 # AssemblyScript Packages Website
 
-# Setting up
+# Running the website
 
-1. Install Bootstrap Studio (https://bootstrapstudio.io/)
-2. DM/Issue me for a license key
-3. Open up `AssemblyScript Packages.bsdesign` in BSS
-4. Export (to the cloned folder)
-5. Push
+First install dependencies:
+
+```sh
+cd aspkg-bss
+npm install
+cd ../aspkg-server
+npm install
+```
+
+In one terminal run the backend:
+
+```sh
+cd aspkg-server
+node server
+```
+
+In another terminal build the frontend:
+
+```sh
+cd aspkg-bss
+npm run dev
+```
+
+Now open http://localhost:3000 in your browser.
 
 # Gateways
 

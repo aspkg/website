@@ -1,7 +1,6 @@
 *.lock
-package-lock.json
 .vscode
-
+*lock*
 node_modules
 .env
 *.env
