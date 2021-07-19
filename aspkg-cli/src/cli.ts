@@ -36,6 +36,9 @@ yargs(hideBin(process.argv))
                     console.log(chalk.green`You're already authenticated!`)
                     console.log('use ' + chalk.blueBright.bold`aspkg logout` + ' to log out of your current session.')
                     await gracefulShutdown(0)
+                } else if (e instanceof Error) {
+                    console.log(chalk.bold.red(e.name + ': ') + e.message)
+                    await gracefulShutdown(1)
                 } else {
                     console.log(chalk.bold.red(e))
                     await gracefulShutdown(1)

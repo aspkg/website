@@ -1,7 +1,14 @@
 import { homedir } from 'os'
 import { join } from 'path'
 import { readFile, writeFile } from 'fs/promises'
-import { AlreadyAuthenticatedException, NotAuthenticatedException } from './errors'
+import {
+    AccessDenied,
+    AlreadyAuthenticatedException,
+    ExpiredCodeException,
+    IncorrectClientCredentials,
+    NotAuthenticatedException,
+    UnsupportedGrantType,
+} from './errors'
 import { client_id, scope } from './config'
 import fetch, { Headers } from 'undici-fetch'
 
@@ -58,6 +65,8 @@ export async function authenticated(): Promise<boolean> {
  * @async
  * @returns {Promise<void>} a Promise that rejects when authorization was unsuccessful.
  * @throws {@link AlreadyAuthenticatedException}
+ * @throws {@link ExpiredCodeException}
+ * @throws {@link AccessDenied}
  */
 export async function login(codeCallback: (code: string, url: string) => void): Promise<void> {
     const isAuthenticated = await authenticated()
@@ -126,14 +135,13 @@ export async function login(codeCallback: (code: string, url: string) => void): 
                         interval += 5000
                         break
                     case 'expired_token':
-                        return reject('Code has expired. Please use `aspkg login` again for a new code.')
+                        return reject(new ExpiredCodeException())
                     case 'unsupported_grant_type':
-                        // Shouldn't happen.
-                        return reject('An internal error has occurred. (code 1)')
+                        return reject(new UnsupportedGrantType())
                     case 'incorrect_client_credentials':
-                        return reject('An internal error has occurred. (code 2)')
+                        return reject(new IncorrectClientCredentials())
                     case 'access_denied':
-                        return reject('Log in was unsuccessful.')
+                        return reject(new AccessDenied())
                 }
 
                 setTimeout(recurse, interval)
