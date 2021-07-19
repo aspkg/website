@@ -2,12 +2,19 @@ pre {
     border-radius: 5px;
 }
 
+.fadeout {
+    animation: fadeout 1s;
+}
+
 .heart-loader-container {
     position: absolute;
+    z-index: 1031;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    background: white;
+    pointer-events: none;
 }
 
 /* Pulsating heart adapted from https://codepen.io/camdenfoucht/pen/BVxawq?editors=0100 */
@@ -68,5 +75,14 @@ pre {
     100% {
         -webkit-transform: rotate(45deg) scale(0.8);
         transform: rotate(45deg) scale(0.8);
+    }
+}
+
+@keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
     }
 }
