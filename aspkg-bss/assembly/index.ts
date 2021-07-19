@@ -8,6 +8,7 @@ import './elements/TheFooter'
 
 let loader = document.querySelector('.heart-loader-container')!
 
+// Once Wasm is loaded, this will make the loader animation fade away.
 setTimeout(() => {
     loader.setAttribute('class', loader.getAttribute('class') + ' fadeout')
 
