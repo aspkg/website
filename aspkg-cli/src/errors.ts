@@ -8,8 +8,8 @@
  * @see {module:lib.login}
  */
 export class AlreadyAuthenticatedException extends Error {
-  constructor() {
-    super("Attempt to call `login` when user is already authenticated.");
-    this.name = "AlreadyAuthenticated";
-  }
+    constructor() {
+        super('Attempt to call `login` when user is already authenticated.')
+        this.name = 'AlreadyAuthenticated'
+    }
 }

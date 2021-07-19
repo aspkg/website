@@ -1,7 +1,7 @@
-import { homedir } from "os";
-import { join } from "path";
-import { readFile, writeFile } from "fs/promises";
-import { AlreadyAuthenticatedException } from "./errors";
+import { homedir } from 'os'
+import { join } from 'path'
+import { readFile, writeFile } from 'fs/promises'
+import { AlreadyAuthenticatedException } from './errors'
 
 /**
  * JS API for the CLI.
@@ -9,14 +9,14 @@ import { AlreadyAuthenticatedException } from "./errors";
  */
 
 interface Configuration {
-  accessToken?: string;
+    accessToken?: string
 }
 
-const aspkgrcPath = join(homedir(), ".aspkgrc");
+const aspkgrcPath = join(homedir(), '.aspkgrc')
 
-const config: Promise<Configuration> = readFile(aspkgrcPath, "utf-8")
-  .then<Configuration>((r) => JSON.parse(r))
-  .catch(() => writeFile(aspkgrcPath, "{}").then<Configuration>(() => ({})));
+const config: Promise<Configuration> = readFile(aspkgrcPath, 'utf-8')
+    .then<Configuration>((r) => JSON.parse(r))
+    .catch(() => writeFile(aspkgrcPath, '{}').then<Configuration>(() => ({})))
 
 /**
  * Check whether the current user is authenticated.
@@ -24,7 +24,7 @@ const config: Promise<Configuration> = readFile(aspkgrcPath, "utf-8")
  * @async
  */
 export async function authenticated(): Promise<boolean> {
-  return !!(await config).accessToken;
+    return !!(await config).accessToken
 }
 
 /**
@@ -34,9 +34,9 @@ export async function authenticated(): Promise<boolean> {
  * @throws {AlreadyAuthenticatedException}
  */
 export async function login(): Promise<boolean> {
-  const isAuthenticated = await authenticated();
-  if (isAuthenticated) {
-    throw new AlreadyAuthenticatedException();
-  }
-  throw "Unimplemented.";
+    const isAuthenticated = await authenticated()
+    if (isAuthenticated) {
+        throw new AlreadyAuthenticatedException()
+    }
+    throw 'Unimplemented.'
 }
