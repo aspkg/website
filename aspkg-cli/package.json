@@ -2,13 +2,24 @@
   "name": "aspkg-cli",
   "version": "1.0.0",
   "description": "AssemblyScript Packages CLI",
-  "main": "index.js",
+  "main": "dist/lib.js",
+  "bin": {
+    "aspkg": "dist/cli.js"
+  },
+  "files": [
+    "dist/**/*"
+  ],
   "aspkg": {
     "type": "git",
-    "platforms": ["wasm", "node", "web"]
+    "platforms": [
+      "wasm",
+      "node",
+      "web"
+    ]
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "aspkg": "node dist/cli.js"
   },
   "repository": {
     "type": "git",
@@ -20,19 +31,24 @@
     "aspkg",
     "CLI"
   ],
-  "author": "Jairus Tanaka + Contributors",
+  "author": "Roman F. <romdotdog> + Jairus Tanaka",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/aspkg/Website/issues"
   },
   "homepage": "https://github.com/aspkg/Website#readme",
   "dependencies": {
-    "@octokit/core": "^3.5.1",
-    "axios": "^0.21.1",
-    "colors": "^1.4.0",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "fastify": "^3.19.1",
-    "got": "^11.8.2"
+    "chalk": "^4.1.1",
+    "open": "^8.2.1",
+    "undici-fetch": "^1.0.0-rc.4",
+    "yargs": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/yargs": "^17.0.2",
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
+    "eslint": "^7.30.0",
+    "prettier": "^2.3.2",
+    "typescript": "^4.3.5"
   }
 }

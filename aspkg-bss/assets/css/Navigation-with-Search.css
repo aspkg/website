@@ -1,7 +1,7 @@
 .navigation-clean-search {
   background: #fff;
-  padding-top: .75rem;
-  padding-bottom: .75rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
   color: #333;
   border-radius: 0;
   box-shadow: none;
@@ -9,7 +9,7 @@
   margin-bottom: 0;
 }
 
-@media (min-width:768px) {
+@media (min-width: 768px) {
   .navigation-clean-search {
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -29,7 +29,8 @@
   border-color: #ddd;
 }
 
-.navigation-clean-search .navbar-toggler:hover, .navigation-clean-search .navbar-toggler:focus {
+.navigation-clean-search .navbar-toggler:hover,
+.navigation-clean-search .navbar-toggler:focus {
   background: none;
 }
 
@@ -37,16 +38,20 @@
   color: #888;
 }
 
-.navigation-clean-search .navbar-collapse, .navigation-clean-search .form-inline {
+.navigation-clean-search .navbar-collapse,
+.navigation-clean-search .form-inline {
   border-top-color: #ddd;
 }
 
-.navigation-clean-search .navbar-nav a.active, .navigation-clean-search .navbar-nav > .show > a {
+.navigation-clean-search .navbar-nav a.active,
+.navigation-clean-search .navbar-nav > .show > a {
   background: none;
   box-shadow: none;
 }
 
-.navigation-clean-search.navbar-light .navbar-nav a.active, .navigation-clean-search.navbar-light .navbar-nav a.active:focus, .navigation-clean-search.navbar-light .navbar-nav a.active:hover {
+.navigation-clean-search.navbar-light .navbar-nav a.active,
+.navigation-clean-search.navbar-light .navbar-nav a.active:focus,
+.navigation-clean-search.navbar-light .navbar-nav a.active:hover {
   color: #8f8f8f;
   box-shadow: none;
   background: none;
@@ -62,12 +67,14 @@
   color: #465765;
 }
 
-.navigation-clean-search.navbar-light .navbar-nav .nav-link:focus, .navigation-clean-search.navbar-light .navbar-nav .nav-link:hover {
+.navigation-clean-search.navbar-light .navbar-nav .nav-link:focus,
+.navigation-clean-search.navbar-light .navbar-nav .nav-link:hover {
   color: #37434d !important;
   background-color: transparent;
 }
 
-.navigation-clean-search .action-button, .navigation-clean-button .action-button:active {
+.navigation-clean-search .action-button,
+.navigation-clean-button .action-button:active {
   background: #56c6c6;
   border-radius: 20px;
   font-size: inherit;
@@ -79,7 +86,8 @@
   transition: background-color 0.25s;
 }
 
-.navigation-clean-search .action-button:hover, .navigation-clean-search .action-button:focus {
+.navigation-clean-search .action-button:hover,
+.navigation-clean-search .action-button:focus {
   background: #66d7d7;
 }
 
@@ -98,7 +106,7 @@
   transition: border-bottom-color 0.3s;
 }
 
-@media (max-width:767px) {
+@media (max-width: 767px) {
   .navigation-clean-search .form-inline .search-field {
     display: inline-block;
     width: 80%;
@@ -108,4 +116,3 @@
 .navigation-clean-search .form-inline .search-field:focus {
   border-bottom: 1px solid #ccc;
 }
-

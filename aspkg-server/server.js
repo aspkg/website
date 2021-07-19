@@ -101,9 +101,7 @@ app.get('/search', async (req, res) => {
 })
 
 app.get('/login', async (req, res) => {
-    res.redirect(
-        `https://github.com/login/oauth/authorize?client_id=${clientId}`
-    )
+    res.redirect(`https://github.com/login/oauth/authorize?client_id=${clientId}`)
 })
 
 app.get('/api-logout', async (req, res) => {
