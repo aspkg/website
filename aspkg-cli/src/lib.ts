@@ -162,7 +162,7 @@ export async function login(codeCallback: (code: string, url: string) => void): 
  */
 export async function logout(): Promise<void> {
     const isAuthenticated = await authenticated()
-    if (isAuthenticated) {
+    if (!isAuthenticated) {
         throw new NotAuthenticatedException()
     }
 
