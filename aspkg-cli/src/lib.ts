@@ -15,10 +15,26 @@ interface Configuration {
 }
 
 const aspkgrcPath = join(homedir(), '.aspkgrc')
+const locks: Promise<unknown>[] = []
 
-const config: Promise<Configuration> = readFile(aspkgrcPath, 'utf-8')
-    .then<Configuration>((r) => JSON.parse(r))
-    .catch(() => writeFile(aspkgrcPath, '{}').then<Configuration>(() => ({})))
+let config: Configuration = {}
+
+locks.push(
+    readFile(aspkgrcPath, 'utf-8')
+        .then((r) => {
+            config = JSON.parse(r)
+        })
+        .catch(() => writeFile(aspkgrcPath, '{}'))
+)
+
+/**
+ * Wait for configuration reads and writes to be completed.
+ * @returns {Promise<void>}
+ * @async
+ */
+export async function waitForLocks(): Promise<void> {
+    await Promise.all(locks)
+}
 
 /**
  * Check whether the current user is authenticated.
@@ -26,7 +42,8 @@ const config: Promise<Configuration> = readFile(aspkgrcPath, 'utf-8')
  * @async
  */
 export async function authenticated(): Promise<boolean> {
-    return !!(await config).accessToken
+    await waitForLocks()
+    return !!config.accessToken
 }
 
 /**

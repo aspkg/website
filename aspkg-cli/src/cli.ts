@@ -1,7 +1,7 @@
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import { AlreadyAuthenticatedException } from './errors'
-import { login } from './lib'
+import { login, waitForLocks } from './lib'
 import chalk from 'chalk'
 import open from 'open'
 
@@ -30,15 +30,23 @@ yargs(hideBin(process.argv))
                 })
 
                 console.log(chalk.greenBright`You're now logged in!`)
+                await gracefulShutdown(0)
             } catch (e) {
                 if (e instanceof AlreadyAuthenticatedException) {
                     console.log(chalk.green`You're already authenticated!`)
                     console.log('use ' + chalk.blueBright.bold`aspkg logout` + ' to log out of your current session.')
+                    await gracefulShutdown(0)
                 } else {
                     console.log(chalk.bold.red(e))
+                    await gracefulShutdown(1)
                 }
             }
         }
     )
     .command('logout', 'Log out of the registry')
     .help().argv
+
+async function gracefulShutdown(code?: number) {
+    await waitForLocks()
+    process.exit(code)
+}
