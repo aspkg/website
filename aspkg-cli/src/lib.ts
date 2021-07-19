@@ -169,3 +169,27 @@ export async function logout(): Promise<void> {
     delete config.accessToken
     saveConfig()
 }
+
+/**
+ * @returns {Promise<string>} GitHub username.
+ * @throws {@link NotAuthenticatedException}
+ * @async
+ */
+export async function whoami(): Promise<string> {
+    const isAuthenticated = await authenticated()
+    if (!isAuthenticated) {
+        throw new NotAuthenticatedException()
+    }
+
+    const headers = new Headers()
+    headers.set('authorization', 'token ' + config.accessToken)
+    headers.set('accept', 'application/vnd.github.v3+json')
+    headers.set('user-agent', 'aspkg-cli') // required!
+
+    // https://docs.github.com/en/rest/reference/users#get-the-authenticated-user
+    const info: {
+        login: string
+    } = await fetch('https://api.github.com/user', { headers }).then((r) => r.json())
+
+    return info.login
+}

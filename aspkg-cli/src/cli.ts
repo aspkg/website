@@ -2,7 +2,7 @@
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import { AlreadyAuthenticatedException, NotAuthenticatedException } from './errors'
-import { login, logout, waitForLocks } from './lib'
+import { login, logout, waitForLocks, whoami } from './lib'
 import chalk from 'chalk'
 import open from 'open'
 
@@ -67,7 +67,33 @@ yargs(hideBin(process.argv))
             }
         }
     )
+    .command(
+        'whoami',
+        "Returns the authenticated user's GitHub username",
+        () => {},
+        async () => {
+            try {
+                console.log(await whoami())
+                await gracefulShutdown(0)
+            } catch (e) {
+                if (e instanceof NotAuthenticatedException) {
+                    await unauthenticatedError()
+                } else {
+                    console.log(chalk.bold.red(e))
+                    await gracefulShutdown(1)
+                }
+            }
+        }
+    )
     .help().argv
+
+async function unauthenticatedError() {
+    console.log(chalk.greenBright`Not logged in!`)
+    console.log(
+        'This command is ' + chalk.bold`logged-in-only.` + 'Use ' + chalk.blueBright.bold`aspkg login` + ' to log in!'
+    )
+    await gracefulShutdown(0)
+}
 
 async function gracefulShutdown(code?: number) {
     await waitForLocks()
