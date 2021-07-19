@@ -28,6 +28,13 @@ locks.push(
 )
 
 /**
+ * Saves the current configuration in the background.
+ */
+function saveConfig() {
+    locks.push(writeFile(aspkgrcPath, JSON.stringify(config)))
+}
+
+/**
  * Wait for configuration reads and writes to be completed.
  * @returns {Promise<void>}
  * @async
@@ -133,6 +140,8 @@ export async function login(codeCallback: (code: string, url: string) => void): 
 
                 setTimeout(recurse, interval)
             } else {
+                config.accessToken = pollResponse.access_token
+                saveConfig()
                 resolve()
             }
         }, interval)
