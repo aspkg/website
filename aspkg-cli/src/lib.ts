@@ -76,7 +76,7 @@ export async function login(codeCallback: (code: string, url: string) => void): 
 
     const headers = new Headers()
     headers.set('content-type', 'application/json;charset=utf-8')
-    headers.set('accept', 'application/json')
+    headers.set('accept', 'application/vnd.github.v3+json')
 
     const codePayload: {
         client_id: string
