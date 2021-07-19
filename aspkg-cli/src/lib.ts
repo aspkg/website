@@ -122,8 +122,6 @@ export async function login(codeCallback: (code: string, url: string) => void): 
 
             if ('error' in pollResponse) {
                 switch (pollResponse.error) {
-                    case 'authorization_pending':
-                        break
                     case 'slow_down':
                         interval += 5000
                         break
