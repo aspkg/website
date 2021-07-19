@@ -1,7 +1,7 @@
 import { homedir } from 'os'
 import { join } from 'path'
 import { readFile, writeFile } from 'fs/promises'
-import { AlreadyAuthenticatedException } from './errors'
+import { AlreadyAuthenticatedException, NotAuthenticatedException } from './errors'
 import { client_id, scope } from './config'
 import fetch, { Headers } from 'undici-fetch'
 
@@ -45,8 +45,8 @@ export async function waitForLocks(): Promise<void> {
 
 /**
  * Check whether the current user is authenticated.
- * @returns {Promise<boolean>} a Promise that represents whether or not the current user is authenticated.
  * @async
+ * @returns {Promise<boolean>} a Promise that represents whether or not the current user is authenticated.
  */
 export async function authenticated(): Promise<boolean> {
     await waitForLocks()
@@ -146,4 +146,20 @@ export async function login(codeCallback: (code: string, url: string) => void): 
             }
         }, interval)
     )
+}
+
+/**
+ * Logs the current user out of the registry.
+ * @remarks This function does not await {@link waitForLocks}
+ * @throws {NotAuthenticatedException}
+ * @async
+ */
+export async function logout(): Promise<void> {
+    const isAuthenticated = await authenticated()
+    if (isAuthenticated) {
+        throw new NotAuthenticatedException()
+    }
+
+    delete config.accessToken
+    saveConfig()
 }
