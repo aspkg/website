@@ -16,7 +16,7 @@
   top: 50%;
   left: 50%;
   color: #fff;
-  box-shadow: 3px 3px 4px rgba(0,0,0,0.2);
+  box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2);
 }
 
 .login-dark .illustration {
@@ -47,7 +47,8 @@
   outline: none;
 }
 
-.login-dark form .btn-primary:hover, .login-dark form .btn-primary:active {
+.login-dark form .btn-primary:hover,
+.login-dark form .btn-primary:active {
   background: #214a80;
   outline: none;
 }
@@ -61,7 +62,8 @@
   text-decoration: none;
 }
 
-.login-dark form .forgot:hover, .login-dark form .forgot:active {
+.login-dark form .forgot:hover,
+.login-dark form .forgot:active {
   opacity: 1;
   text-decoration: none;
 }
@@ -69,4 +71,3 @@
 .login-dark form .btn-primary:active {
   transform: translateY(1px);
 }
-
