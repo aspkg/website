@@ -1,0 +1,88 @@
+pre {
+	border-radius: 5px;
+}
+
+.fadeout {
+	animation: fadeout 1s;
+}
+
+.heart-loader-container {
+	position: absolute;
+	z-index: 1031;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: white;
+	pointer-events: none;
+}
+
+/* Pulsating heart adapted from https://codepen.io/camdenfoucht/pen/BVxawq?editors=0100 */
+.heart-loader {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	background-color: #f44336;
+	width: 50px;
+	height: 50px;
+	position: relative;
+	transform: translate(-50%, -50%) rotate(45deg);
+	animation: pulsate 1s infinite;
+}
+
+.heart-loader::before,
+.heart-loader::after {
+	display: inline-block;
+	content: '';
+	width: 50px;
+	height: 50px;
+	background-color: #f44336;
+	position: absolute;
+	border-radius: 50%;
+}
+
+.heart-loader::before {
+	top: 0px;
+	left: -25px;
+}
+.heart-loader::after {
+	top: -25px;
+	left: -0px;
+}
+
+@keyframes pulsate {
+	0% {
+		-webkit-transform: rotate(45deg) scale(0.8);
+		transform: rotate(45deg) scale(0.8);
+		transform: rotate(45deg) scale(0.8);
+	}
+	5% {
+		-webkit-transform: rotate(45deg) scale(0.9);
+		transform: rotate(45deg) scale(0.9);
+	}
+	10% {
+		-webkit-transform: rotate(45deg) scale(0.8);
+		transform: rotate(45deg) scale(0.8);
+	}
+	15% {
+		-webkit-transform: rotate(45deg) scale(1);
+		transform: rotate(45deg) scale(1);
+	}
+	50% {
+		-webkit-transform: rotate(45deg) scale(0.8);
+		transform: rotate(45deg) scale(0.8);
+	}
+	100% {
+		-webkit-transform: rotate(45deg) scale(0.8);
+		transform: rotate(45deg) scale(0.8);
+	}
+}
+
+@keyframes fadeout {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
