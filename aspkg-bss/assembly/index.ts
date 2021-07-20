@@ -10,9 +10,9 @@ let loader = document.querySelector('.heart-loader-container')!
 
 // Once Wasm is loaded, this will make the loader animation fade away.
 setTimeout(() => {
-    loader.setAttribute('class', loader.getAttribute('class') + ' fadeout')
+	loader.setAttribute('class', loader.getAttribute('class') + ' fadeout')
 
-    setTimeout(() => {
-        loader.remove()
-    }, 1000)
+	setTimeout(() => {
+		loader.remove()
+	}, 1000)
 }, 1000)

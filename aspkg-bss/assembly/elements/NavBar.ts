@@ -2,17 +2,17 @@ import { customElements } from '../../node_modules/asdom/assembly/index'
 import { AspkgElement } from './AspkgElement'
 
 class NavBar extends AspkgElement {
-    static observedAttributes: string[] = []
+	static observedAttributes: string[] = []
 
-    constructor() {
-        super()
-        this.useShadow = false
-    }
+	constructor() {
+		super()
+		this.useShadow = false
+	}
 
-    template(): string {
-        const hostSelector = this.shadowRoot != null ? ':host' : 'nav-bar'
+	template(): string {
+		const hostSelector = this.shadowRoot != null ? ':host' : 'nav-bar'
 
-        return /*html*/ `
+		return /*html*/ `
             <nav class="navbar navbar-dark navbar-expand-lg fixed-top" id="mainNav">
                 <div class="container">
                     <img class="logo" src="assets/img/logo.svg" />
@@ -93,7 +93,7 @@ class NavBar extends AspkgElement {
                 }
             </style>
         `
-    }
+	}
 }
 
 customElements.define('nav-bar', () => new NavBar(), NavBar.observedAttributes)

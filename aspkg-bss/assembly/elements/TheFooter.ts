@@ -2,17 +2,17 @@ import { customElements } from '../../node_modules/asdom/assembly/index'
 import { AspkgElement } from './AspkgElement'
 
 class TheFooter extends AspkgElement {
-    static observedAttributes: string[] = []
+	static observedAttributes: string[] = []
 
-    constructor() {
-        super()
-        this.useShadow = false
-    }
+	constructor() {
+		super()
+		this.useShadow = false
+	}
 
-    template(): string {
-        const hostSelector = this.shadowRoot != null ? ':host' : 'nav-bar'
+	template(): string {
+		const hostSelector = this.shadowRoot != null ? ':host' : 'nav-bar'
 
-        return /*html*/ `
+		return /*html*/ `
             <section class="the-footer bg-dark text-white">
                 <footer class="footer-dark">
                     <div class="container">
@@ -86,7 +86,7 @@ class TheFooter extends AspkgElement {
                 }
             </style>
         `
-    }
+	}
 }
 
 customElements.define('the-footer', () => new TheFooter(), TheFooter.observedAttributes)

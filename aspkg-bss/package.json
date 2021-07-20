@@ -1,41 +1,41 @@
 {
-    "name": "aspkg-web",
-    "version": "0.0.0",
-    "description": "AssemblyScript Packages Website",
-    "license": "MIT",
-    "homepage": "https://github.com/aspkg/website#readme",
-    "authors": "https://github.com/aspkg/website/graphs/contributors",
-    "main": "server.js",
-    "scripts": {
-        "test": "node tests",
-        "dev": "npm run asbuild:untouched",
-        "build": "npm run asbuild:untouched && npm run asbuild:optimized",
-        "asbuild:untouched": "asc assembly/index.ts --explicitStart --exportRuntime --exportTable --target debug",
-        "asbuild:optimized": "asc assembly/index.ts --explicitStart --exportRuntime --exportTable --target release",
-        "yarn:asbuild": "yarn asbuild:untouched && yarn asbuild:optimized"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/aspkg/website.git"
-    },
-    "keywords": [
-        "AssemblyScript",
-        "Package",
-        "aspkg",
-        "CLI"
-    ],
-    "bugs": {
-        "url": "https://github.com/aspkg/website/issues"
-    },
-    "dependencies": {
-        "@assemblyscript/loader": "^0.19.7",
-        "as-console": "^6.0.0",
-        "as-fetch": "^1.0.8",
-        "asdom": "^0.1.14",
-        "assemblyscript": "^0.19.7",
-        "ecmassembly": "^0.1.9"
-    },
-    "devDependencies": {
-        "assemblyscript": "^0.19.7"
-    }
+	"name": "aspkg-web",
+	"version": "0.0.0",
+	"description": "AssemblyScript Packages Website",
+	"license": "MIT",
+	"homepage": "https://github.com/aspkg/website#readme",
+	"authors": "https://github.com/aspkg/website/graphs/contributors",
+	"main": "server.js",
+	"scripts": {
+		"test": "node tests",
+		"dev": "npm run asbuild:untouched",
+		"build": "npm run asbuild:untouched && npm run asbuild:optimized",
+		"asbuild:untouched": "asc assembly/index.ts --explicitStart --exportRuntime --exportTable --target debug",
+		"asbuild:optimized": "asc assembly/index.ts --explicitStart --exportRuntime --exportTable --target release",
+		"yarn:asbuild": "yarn asbuild:untouched && yarn asbuild:optimized"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/aspkg/website.git"
+	},
+	"keywords": [
+		"AssemblyScript",
+		"Package",
+		"aspkg",
+		"CLI"
+	],
+	"bugs": {
+		"url": "https://github.com/aspkg/website/issues"
+	},
+	"dependencies": {
+		"@assemblyscript/loader": "^0.19.7",
+		"as-console": "^6.0.0",
+		"as-fetch": "^1.0.8",
+		"asdom": "^0.1.14",
+		"assemblyscript": "^0.19.7",
+		"ecmassembly": "^0.1.9"
+	},
+	"devDependencies": {
+		"assemblyscript": "^0.19.7"
+	}
 }
