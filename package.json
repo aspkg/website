@@ -7,7 +7,7 @@
 	"authors": "https://github.com/aspkg/website/graphs/contributors",
 	"main": "server.js",
 	"scripts": {
-		"start": "npm run dev && live-server .",
+		"start": "node server",
 		"test": "node tests",
 		"dev": "npm run asbuild:untouched",
 		"build": "npm run asbuild:untouched && npm run asbuild:optimized",
@@ -42,7 +42,6 @@
 	},
 	"devDependencies": {
 		"assemblyscript": "^0.19.7",
-		"live-server": "^1.2.1",
 		"prettier": "^2.3.2"
 	}
 }

@@ -83,25 +83,32 @@ async function runASModule() {
 async function runPackage() {
 	const pkg = await (await fetch(`http://localhost:3000/api-get${location.search}`)).json()
 
-	console.log(pkg)
+	const gh_owner = (pkg['repository']['url']).replace('git+', '').replace('https://', '').replace('github.com', '').replace('.git', '').toLowerCase().split('/')[1]
+
+	const gh_repo = (pkg['repository']['url']).replace('git+', '').replace('https://', '').replace('github.com', '').replace('.git', '').toLowerCase().split('/')[2]
 
 	const token = getCookie('token')
 
 	const octokit = new Octokit({ auth: token })
 
-	const user = await octokit.request('GET /user')
+	const currentUser = await octokit.request('GET /user')
 
-	const userAvatar = user.data.avatar_url
+	console.log(`https://api.github.com/users/${gh_owner}`)
+	const packageAuthor = await (await fetch(`https://api.github.com/users/${gh_owner}`, {
+		method: 'GET'
+	})).json()
 
-	const userName = user.data.name
+	const userAvatar = currentUser.data.avatar_url
+
+	const userName = currentUser.data.name
+
+	const authorAvatar = packageAuthor.avatar_url
+
+	const authorName = packageAuthor.name
 
 	const ghAuthor = document.getElementById('gh-author')
 
-	ghAuthor.innerHTML = `<img src="${userAvatar}" style="width: 30px; border-radius: 57px; margin-right: 8px" />${userName}`
-
-	const gh_owner = (pkg['repository']['url']).replace('git+', '').replace('https://', '').replace('github.com', '').replace('.git', '').toLowerCase().split('/')[1]
-
-	const gh_repo = (pkg['repository']['url']).replace('git+', '').replace('https://', '').replace('github.com', '').replace('.git', '').toLowerCase().split('/')[2]
+	ghAuthor.innerHTML = `<img src="${authorAvatar}" style="width: 30px; border-radius: 57px; margin-right: 8px" />${authorName}`
 
 	const readme = await (await fetch(`https://raw.githubusercontent.com/${gh_owner}/${gh_repo}/master/README.md`)).text()
 

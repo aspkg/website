@@ -5,7 +5,7 @@ const app = fastify()
 
 // Set cookie handler
 app.register(require('fastify-static'), {
-    root: './',
+    root: __dirname,
 	prefix: '/'
 })
 
