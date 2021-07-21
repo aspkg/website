@@ -36,7 +36,9 @@
 		"as-fetch": "^1.0.8",
 		"asdom": "^0.1.14",
 		"assemblyscript": "^0.19.7",
-		"ecmassembly": "^0.1.9"
+		"ecmassembly": "^0.1.9",
+		"fastify": "^3.19.1",
+		"fastify-static": "^4.2.2"
 	},
 	"devDependencies": {
 		"assemblyscript": "^0.19.7",

@@ -31,7 +31,7 @@ class NavBar extends AspkgElement {
 				<button class="btn action-button nav-btn" type="button">
 					<i class="icon-bell"></i>
 				</button>
-				<a class="btn action-button loginBtn nav-btn" role="button" id="gh-avatar-icon" href="/login">
+				<a class="btn action-button loginBtn nav-btn" role="button" id="gh-avatar-icon" href="http://localhost:3000/login">
 					<i class="icon-login"></i>
 				</a>
 			</nav>

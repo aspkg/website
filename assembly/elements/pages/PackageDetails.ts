@@ -192,10 +192,7 @@ class PackageDetails extends AspkgElement {
 				<div class="col">
 					<div></div>
 				</div>
-				<span style="color: rgb(30, 30, 30); font-size: 15px; padding-left: 30px; min-width: 0px; max-width: 69%">
-					<img src="assets/img/avatar.jpg" style="width: 30px; border-radius: 57px; margin-right: 8px" />
-					Jairus Tanaka
-				</span>
+				<span id="gh-author" style="color: rgb(30, 30, 30); font-size: 15px; padding-left: 30px; min-width: 0px; max-width: 69%"></span>
 				<p></p>
 				<div style="width: 69%; padding-left: 30px; padding-right: 30px">
 					<code

@@ -19,7 +19,6 @@ async function main() {
 		runLogin()
 	}*/
 	runPackage()
-	runLogin()
 }
 
 async function runASModule() {
@@ -43,10 +42,11 @@ async function runASModule() {
 
 	// Now execute the Wasm module. Make the Wasm module was compiled with `--explicitStart`.
 	exports._start()
-}
 
-async function runLogin() {
-	console.log(document.cookie)
+	if (location.search.includes('code')) {
+		await fetch(`http://localhost:3000/api-login`)
+		console.log(document.cookie)
+	}
 
 	if (getCookie('token')) {
 		console.log('Logged in.')
@@ -77,12 +77,27 @@ async function runLogin() {
 	} else {
 		console.log('Not Logged In')
 	}
+
 }
 
 async function runPackage() {
-	const pkg = await (await fetch(`/api-get${location.search}`)).json()
+	const pkg = await (await fetch(`http://localhost:3000/api-get${location.search}`)).json()
 
 	console.log(pkg)
+
+	const token = getCookie('token')
+
+	const octokit = new Octokit({ auth: token })
+
+	const user = await octokit.request('GET /user')
+
+	const userAvatar = user.data.avatar_url
+
+	const userName = user.data.name
+
+	const ghAuthor = document.getElementById('gh-author')
+
+	ghAuthor.innerHTML = `<img src="${userAvatar}" style="width: 30px; border-radius: 57px; margin-right: 8px" />${userName}`
 
 	const gh_owner = (pkg['repository']['url']).replace('git+', '').replace('https://', '').replace('github.com', '').replace('.git', '').toLowerCase().split('/')[1]
 

@@ -31,7 +31,7 @@ class MainContent extends AspkgElement {
 	private __pageContainer: HTMLElement | null = null
 
 	// TODO the initial value should be set based on the current route.
-	private __route: Route = routes[0]
+	private __route: Route = routes[1]
 
 	private __interval: i32 = -1
 
@@ -47,13 +47,13 @@ class MainContent extends AspkgElement {
 		// On route changes, we'll change which page we render in the main content area.
 		// For now, we we are emulating a random route change to show the proof of concept.
 		// TODO put real routing in place (requires bindings for History API and similar).
-		this.__interval = setInterval(() => {
+		//this.__interval = setInterval(() => {
 			self = changetype<MainContent>(ptr)
 
 			self.__route = routes[(routes.findIndex((r) => self.__route.path === r.path) + 1) % routes.length]
 
 			self.update()
-		}, 2000)
+		//}, 2000)
 	}
 
 	disconnectedCallback(): void {
