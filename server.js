@@ -5,8 +5,8 @@ const app = fastify()
 
 // Set cookie handler
 app.register(require('fastify-static'), {
-    root: __dirname,
-	prefix: '/'
+	root: __dirname,
+	prefix: '/',
 })
 
 app.listen(5000)

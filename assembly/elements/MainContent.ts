@@ -48,11 +48,11 @@ class MainContent extends AspkgElement {
 		// For now, we we are emulating a random route change to show the proof of concept.
 		// TODO put real routing in place (requires bindings for History API and similar).
 		//this.__interval = setInterval(() => {
-			self = changetype<MainContent>(ptr)
+		self = changetype<MainContent>(ptr)
 
-			self.__route = routes[(routes.findIndex((r) => self.__route.path === r.path) + 1) % routes.length]
+		self.__route = routes[(routes.findIndex((r) => self.__route.path === r.path) + 1) % routes.length]
 
-			self.update()
+		self.update()
 		//}, 2000)
 	}
 

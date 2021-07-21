@@ -77,15 +77,26 @@ async function runASModule() {
 	} else {
 		console.log('Not Logged In')
 	}
-
 }
 
 async function runPackage() {
 	const pkg = await (await fetch(`http://localhost:3000/api-get${location.search}`)).json()
 
-	const gh_owner = (pkg['repository']['url']).replace('git+', '').replace('https://', '').replace('github.com', '').replace('.git', '').toLowerCase().split('/')[1]
+	const gh_owner = pkg['repository']['url']
+		.replace('git+', '')
+		.replace('https://', '')
+		.replace('github.com', '')
+		.replace('.git', '')
+		.toLowerCase()
+		.split('/')[1]
 
-	const gh_repo = (pkg['repository']['url']).replace('git+', '').replace('https://', '').replace('github.com', '').replace('.git', '').toLowerCase().split('/')[2]
+	const gh_repo = pkg['repository']['url']
+		.replace('git+', '')
+		.replace('https://', '')
+		.replace('github.com', '')
+		.replace('.git', '')
+		.toLowerCase()
+		.split('/')[2]
 
 	const token = getCookie('token')
 
@@ -94,9 +105,11 @@ async function runPackage() {
 	const currentUser = await octokit.request('GET /user')
 
 	console.log(`https://api.github.com/users/${gh_owner}`)
-	const packageAuthor = await (await fetch(`https://api.github.com/users/${gh_owner}`, {
-		method: 'GET'
-	})).json()
+	const packageAuthor = await (
+		await fetch(`https://api.github.com/users/${gh_owner}`, {
+			method: 'GET',
+		})
+	).json()
 
 	const userAvatar = currentUser.data.avatar_url
 
@@ -159,7 +172,7 @@ async function runPackage() {
 		// Copy to clipboard
 		setTimeout(() => {
 			pkgInstall.innerText = `npm i ${gh_owner}/${gh_repo}`
-		}, 500);
+		}, 500)
 	}
 
 	if (pkg['dependencies']) pkgDependencies.innerText = Object.keys(pkg['dependencies']).length || 0
