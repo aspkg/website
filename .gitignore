@@ -1,2 +1,7 @@
-build/
+*.lock
+*lock*
 node_modules
+.env
+*.env
+database
+build/

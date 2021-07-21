@@ -1,0 +1,3 @@
+*.min*
+*.lock
+*lock.json

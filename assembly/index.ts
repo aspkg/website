@@ -3,8 +3,10 @@ export * from '../node_modules/asdom/assembly/glue'
 
 import { document } from '../node_modules/asdom/assembly'
 import { setTimeout } from '../node_modules/ecmassembly/assembly/index'
+
 import './elements/NavBar'
 import './elements/TheFooter'
+import './elements/ASLogoWordmark'
 
 let loader = document.querySelector('.heart-loader-container')!
 

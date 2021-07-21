@@ -1,4 +1,4 @@
-//import { Octokit } from 'https://cdn.skypack.dev/@octokit/core'
+import { Octokit } from 'https://cdn.skypack.dev/@octokit/core'
 
 import { Asdom } from './node_modules/asdom/glue/index.js'
 import { ECMAssembly } from './node_modules/ecmassembly/index.js'
@@ -7,7 +7,7 @@ import { instantiate } from './node_modules/@assemblyscript/loader/index.js'
 main()
 
 async function main() {
-    await runASModule()
+	await runASModule()
 
 	console.log('Running Aspkg...')
 	console.log('Pathname: ', location.pathname)
@@ -50,10 +50,10 @@ async function runLogin() {
 		console.log('Logged in.')
 		const token = getCookie('token')
 		console.log('Token: ', token)
-		//const octokit = new Octokit({ auth: token })
+		const octokit = new Octokit({ auth: token })
 		const gh_avatar_icon = document.getElementById('gh-avatar-icon')
 
-		//const user = await octokit.request('GET /user')
+		const user = await octokit.request('GET /user')
 
 		gh_avatar_icon.innerHTML = `<img src="assets/img/avatar.jpg" style="width: 30px;border-radius: 100%;margin-left: 10px;margin-left: -1px;margin-bottom: 0px;margin-top: -1px;padding-right: 0px;">`
 
@@ -74,117 +74,115 @@ async function runLogin() {
 }
 
 async function runPackage() {
-    const pkgData = await (await fetch(`http://localhost:3030/api-get${location.search}`)).json()
+	const pkgData = await (await fetch(`/api-get${location.search}`)).json()
 
-    const pkg = pkgData
+	const pkg = pkgData['package']
 
-    const readme = (await (await fetch(`https://raw.githubusercontent.com/aspkg/as-json/master/README.md`)).text())
-    
-    console.log('Readme: ', readme)
+	const readme = pkgData['readme']
 
-    const pkgTitle = document.getElementById('pkg-title')
+	console.log('Readme: ', readme)
 
-    const pkgVersion = document.getElementById('pkg-version')
+	const pkgTitle = document.getElementById('pkg-title')
 
-    const pkgInstall = document.getElementById('pkg-install')
+	const pkgVersion = document.getElementById('pkg-version')
 
-    const pkgGitHubLink = document.getElementById('pkg-github-link')
+	const pkgInstall = document.getElementById('pkg-install')
 
-    const pkgDependencies = document.getElementById('pkg-dependencies')
+	const pkgGitHubLink = document.getElementById('pkg-github-link')
 
-    const pkgDevDependencies = document.getElementById('pkg-dev-dependencies')
+	const pkgDependencies = document.getElementById('pkg-dependencies')
 
-    const pkgIssues = document.getElementById('pkg-issues')
+	const pkgDevDependencies = document.getElementById('pkg-dev-dependencies')
 
-    const pkgLicense = document.getElementById('pkg-license')
+	const pkgIssues = document.getElementById('pkg-issues')
 
-    const pkgReadme = document.getElementById('pkg-readme')
+	const pkgLicense = document.getElementById('pkg-license')
 
-    pkgReadme.innerHTML = marked(readme)
+	const pkgReadme = document.getElementById('pkg-readme')
 
-    pkgTitle.innerText = pkg.name
+	pkgReadme.innerHTML = marked(readme)
 
-    pkgVersion.innerText = `v${pkg.version}`
+	pkgTitle.innerText = pkg.name
 
-    const issuesData = await (await fetch(`https://api.github.com/repos/aspkg/as-json/issues`)).json()
+	pkgVersion.innerText = `v${pkg.version}`
 
-    pkgIssues.innerText = Object.keys(issuesData).length
+	const issuesData = await (await fetch('https://api.github.com/repos/aspkg/as-json/issues')).json()
 
-    pkgIssues.setAttribute(
-        'href',
-        `${pkg['repository']['url'].replace('git+', '').replace('.git', '').toLowerCase()}/issues`
-    )
+	pkgIssues.innerText = Object.keys(issuesData).length
 
-    if (pkg['aspkg']['type'] === 'git') {
-        pkgInstall.innerText = ` npm i ${pkg['repository']['url']
-            .replace('git+', '')
-            .replace('https://', '')
-            .replace('github.com/', '')
-            .replace('.git', '')
-            .toLowerCase()} `
-        pkgGitHubLink.innerText = `${pkg['repository']['url']
-            .replace('git+', '')
-            .replace('https://', '')
-            .replace('github.com/', '')
-            .replace('.git', '')
-            .toLowerCase()}`
-        pkgGitHubLink.setAttribute(
-            'href',
-            pkg['repository']['url'].replace('git+', '').replace('.git', '').toLowerCase()
-        )
-        pkgInstall.onclick = () => {
-            navigator.clipboard.writeText(
-                `npm i ${pkg['repository']['url']
-                    .replace('git+', '')
-                    .replace('https://', '')
-                    .replace('github.com/', '')
-                    .replace('.git', '')
-                    .toLowerCase()}`
-            )
-        }
-    } else if (pkg['aspkg']['type'] === 'npm') {
-        pkgInstall.innerText = ` npm i ${pkg['name'].toLowerCase()} `
-        if (pkg['repository'] && pkg['repository']['type'] === 'git') {
-            pkgGitHubLink.innerText = `${pkg['repository']['url']
-                .replace('git+', '')
-                .replace('https://', '')
-                .replace('github.com/', '')
-                .replace('.git', '')
-                .toLowerCase()}`
-            pkgGitHubLink.setAttribute(
-                'href',
-                pkg['repository']['url'].replace('git+', '').replace('.git', '').toLowerCase()
-            )
-        } else {
-            pkgGitHubLink.innerText = 'NPM'
-            pkgGitHubLink.setAttribute('href', `https://npmjs.com/package${pkg['name']}/`.toLowerCase())
-        }
-        pkgInstall.onclick = () => {
-            navigator.clipboard.writeText(`npm i ${pkg['name'].toLowerCase()}`)
-        }
-    }
+	pkgIssues.setAttribute(
+		'href',
+		`${pkg['repository']['url'].replace('git+', '').replace('.git', '').toLowerCase()}/issues`
+	)
 
-    if (pkg['dependencies']) pkgDependencies.innerText = Object.keys(pkg['dependencies']).length || 0
-    else pkgDependencies.innerText = 0
+	if (pkg['aspkg']['type'] === 'git') {
+		pkgInstall.innerText = ` npm i ${pkg['repository']['url']
+			.replace('git+', '')
+			.replace('https://', '')
+			.replace('github.com/', '')
+			.replace('.git', '')
+			.toLowerCase()} `
+		pkgGitHubLink.innerText = `${pkg['repository']['url']
+			.replace('git+', '')
+			.replace('https://', '')
+			.replace('github.com/', '')
+			.replace('.git', '')
+			.toLowerCase()}`
+		pkgGitHubLink.setAttribute('href', pkg['repository']['url'].replace('git+', '').replace('.git', '').toLowerCase())
+		pkgInstall.onclick = () => {
+			navigator.clipboard.writeText(
+				`npm i ${pkg['repository']['url']
+					.replace('git+', '')
+					.replace('https://', '')
+					.replace('github.com/', '')
+					.replace('.git', '')
+					.toLowerCase()}`
+			)
+		}
+	} else if (pkg['aspkg']['type'] === 'npm') {
+		pkgInstall.innerText = ` npm i ${pkg['name'].toLowerCase()} `
+		if (pkg['repository'] && pkg['repository']['type'] === 'git') {
+			pkgGitHubLink.innerText = `${pkg['repository']['url']
+				.replace('git+', '')
+				.replace('https://', '')
+				.replace('github.com/', '')
+				.replace('.git', '')
+				.toLowerCase()}`
+			pkgGitHubLink.setAttribute('href', pkg['repository']['url'].replace('git+', '').replace('.git', '').toLowerCase())
+		} else {
+			pkgGitHubLink.innerText = 'NPM'
+			pkgGitHubLink.setAttribute('href', `https://npmjs.com/package${pkg['name']}/`.toLowerCase())
+		}
+		pkgInstall.onclick = () => {
+			navigator.clipboard.writeText(`npm i ${pkg['name'].toLowerCase()}`)
+		}
+	}
 
-    if (pkg['devDependencies']) pkgDevDependencies.innerText = Object.keys(pkg['devDependencies']).length || 0
-    else pkgDevDependencies.innerText = 0
+	if (pkg['dependencies']) pkgDependencies.innerText = Object.keys(pkg['dependencies']).length || 0
+	else pkgDependencies.innerText = 0
 
-    pkgLicense.innerText = pkg['license']
+	if (pkg['devDependencies']) pkgDevDependencies.innerText = Object.keys(pkg['devDependencies']).length || 0
+	else pkgDevDependencies.innerText = 0
 
-    const blocksJS = document.getElementsByClassName('language-js')
+	pkgLicense.innerText = pkg['license']
 
-    for (let i = 0; i < blocksJS.length; i++) {
-        let element = blocksJS.item(i)
-        Rainbow.color(element.textContent, 'javascript', (code) => {
-            console.log('\nColored Code:\n', code)
-            element.innerHTML = code
-        })
-    }
+	const blocksJS = document.getElementsByClassName('language-js')
+
+	for (let i = 0; i < blocksJS.length; i++) {
+		let element = blocksJS.item(i)
+		Rainbow.color(element.textContent, 'javascript', (code) => {
+			console.log('\nColored Code:\n', code)
+			element.innerHTML = code
+		})
+	}
 }
 
 function getCookie(name) {
 	const value = `; ${document.cookie}`
 	const parts = value.split(`; ${name}=`)
 	if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+function decodeBase64(data) {
+	return window.atob(data)
 }
