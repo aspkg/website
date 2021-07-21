@@ -12,12 +12,14 @@ async function main() {
 	console.log('Running Aspkg...')
 	console.log('Pathname: ', location.pathname)
 
-	if (location.pathname === '/') {
+	/*if (location.pathname === '/') {
 		runLogin()
-	} else if (location.pathname === '/package') {
+	} else if (location.pathname === '/') {
 		runPackage()
 		runLogin()
-	}
+	}*/
+	runPackage()
+	runLogin()
 }
 
 async function runASModule() {
@@ -55,7 +57,11 @@ async function runLogin() {
 
 		const user = await octokit.request('GET /user')
 
-		gh_avatar_icon.innerHTML = `<img src="assets/img/avatar.jpg" style="width: 30px;border-radius: 100%;margin-left: 10px;margin-left: -1px;margin-bottom: 0px;margin-top: -1px;padding-right: 0px;">`
+		const userAvatar = user.data.avatar_url
+
+		const userName = user.data.name
+
+		gh_avatar_icon.innerHTML = `<img src="${userAvatar}" style="width: 30px;border-radius: 100%;margin-left: 10px;margin-left: -1px;margin-bottom: 0px;margin-top: -1px;padding-right: 0px;">`
 
 		// Want to make a drop-down with the following options:
 		//             V (user icon)
@@ -74,13 +80,15 @@ async function runLogin() {
 }
 
 async function runPackage() {
-	const pkgData = await (await fetch(`/api-get${location.search}`)).json()
+	const pkg = await (await fetch(`/api-get${location.search}`)).json()
 
-	const pkg = pkgData['package']
+	console.log(pkg)
 
-	const readme = pkgData['readme']
+	const gh_owner = (pkg['repository']['url']).replace('git+', '').replace('https://', '').replace('github.com', '').replace('.git', '').toLowerCase().split('/')[1]
 
-	console.log('Readme: ', readme)
+	const gh_repo = (pkg['repository']['url']).replace('git+', '').replace('https://', '').replace('github.com', '').replace('.git', '').toLowerCase().split('/')[2]
+
+	const readme = await (await fetch(`https://raw.githubusercontent.com/${gh_owner}/${gh_repo}/master/README.md`)).text()
 
 	const pkgTitle = document.getElementById('pkg-title')
 
@@ -115,47 +123,21 @@ async function runPackage() {
 		`${pkg['repository']['url'].replace('git+', '').replace('.git', '').toLowerCase()}/issues`
 	)
 
-	if (pkg['aspkg']['type'] === 'git') {
-		pkgInstall.innerText = ` npm i ${pkg['repository']['url']
-			.replace('git+', '')
-			.replace('https://', '')
-			.replace('github.com/', '')
-			.replace('.git', '')
-			.toLowerCase()} `
-		pkgGitHubLink.innerText = `${pkg['repository']['url']
-			.replace('git+', '')
-			.replace('https://', '')
-			.replace('github.com/', '')
-			.replace('.git', '')
-			.toLowerCase()}`
-		pkgGitHubLink.setAttribute('href', pkg['repository']['url'].replace('git+', '').replace('.git', '').toLowerCase())
-		pkgInstall.onclick = () => {
-			navigator.clipboard.writeText(
-				`npm i ${pkg['repository']['url']
-					.replace('git+', '')
-					.replace('https://', '')
-					.replace('github.com/', '')
-					.replace('.git', '')
-					.toLowerCase()}`
-			)
-		}
-	} else if (pkg['aspkg']['type'] === 'npm') {
-		pkgInstall.innerText = ` npm i ${pkg['name'].toLowerCase()} `
-		if (pkg['repository'] && pkg['repository']['type'] === 'git') {
-			pkgGitHubLink.innerText = `${pkg['repository']['url']
-				.replace('git+', '')
-				.replace('https://', '')
-				.replace('github.com/', '')
-				.replace('.git', '')
-				.toLowerCase()}`
-			pkgGitHubLink.setAttribute('href', pkg['repository']['url'].replace('git+', '').replace('.git', '').toLowerCase())
-		} else {
-			pkgGitHubLink.innerText = 'NPM'
-			pkgGitHubLink.setAttribute('href', `https://npmjs.com/package${pkg['name']}/`.toLowerCase())
-		}
-		pkgInstall.onclick = () => {
-			navigator.clipboard.writeText(`npm i ${pkg['name'].toLowerCase()}`)
-		}
+	pkgIssues.setAttribute('href', `https://github.com/${gh_owner}/${gh_repo}/issues`)
+
+	pkgGitHubLink.setAttribute('href', `https://github.com/${gh_owner}/${gh_repo}/`)
+
+	pkgGitHubLink.innerText = `${gh_owner}/${gh_repo}`
+
+	pkgInstall.innerText = `npm i ${gh_owner}/${gh_repo}`
+
+	pkgInstall.onclick = () => {
+		pkgInstall.innerText = `Copied!`
+		navigator.clipboard.writeText(`npm i ${gh_owner}/${gh_repo}`)
+		// Copy to clipboard
+		setTimeout(() => {
+			pkgInstall.innerText = `npm i ${gh_owner}/${gh_repo}`
+		}, 500);
 	}
 
 	if (pkg['dependencies']) pkgDependencies.innerText = Object.keys(pkg['dependencies']).length || 0

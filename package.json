@@ -31,6 +31,7 @@
 	},
 	"dependencies": {
 		"@assemblyscript/loader": "^0.19.7",
+		"@octokit/core": "^3.5.1",
 		"as-console": "^6.0.0",
 		"as-fetch": "^1.0.8",
 		"asdom": "^0.1.14",

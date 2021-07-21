@@ -1,6 +1,8 @@
-import { customElements } from '../../../node_modules/asdom/assembly/index'
+import { customElements, document } from '../../../node_modules/asdom/assembly/index'
 import { AspkgElement } from '../AspkgElement'
-
+//import { fetch } from "as-fetch";
+// Going to need to mod once v0.2.0 is released
+//import { JSON } from "json-as"
 class PackageDetails extends AspkgElement {
 	static observedAttributes: string[] = []
 
@@ -16,16 +18,13 @@ class PackageDetails extends AspkgElement {
 			<section
 				id="readme"
 				style="
-					background: #1a2634;
 					font-size: 31px;
 					height: auto;
 					width: auto;
 					margin-left: 40px;
 					margin-right: 40px;
-					margin-top: 107px;
+					margin-top:	 107px;
 					margin-bottom: 40px;
-					border-radius: 10px;
-					border: 1px solid rgb(40, 45, 50);
 					padding-bottom: 128px;
 				"
 			>
@@ -38,36 +37,34 @@ class PackageDetails extends AspkgElement {
 						bottom: 0px;
 						width: 28%;
 						height: 90%;
-						background: #1a2634;
 						border-radius: 0px;
 						font-weight: normal;
 						padding-top: 0px;
 						margin-top: 40px;
 						margin-bottom: 40px;
-						border-color: rgb(40, 45, 50);
-						border-right: 1px solid rgb(40, 45, 50);
-						border-left: 2px solid rgb(40, 45, 50);
+						border-color: rgb(55, 55, 55);
+						border-left: 2px solid rgb(55, 55, 55)
 						padding-bottom: 0px;
 					"
 				>
-					<span style="padding-left: 15px; color: rgb(255, 255, 255); font-weight: bold; font-size: 18px">Install</span>
+					<span style="padding-left: 15px; color: rgb(30, 30, 30); font-weight: bold; font-size: 18px">Install</span>
 					<p
-						style="font-size: 18px; color: rgb(255, 255, 255); margin-top: 15px; font-weight: bold; padding-left: 15px"
+						style="font-size: 18px; color: rgb(30, 30, 30); margin-top: 15px; font-weight: bold; padding-left: 15px"
 					></p>
 					<p style="font-size: 18px; padding-left: 15px">
 						<span
 							id="pkg-install"
-							style="font-size: 18px; color: rgb(255, 255, 255); background: rgba(9, 11, 16, 0.48); border-radius: 3px"
+							style="font-size: 18px; color: rgb(30, 30, 30);"
 						>
 							-
 						</span>
 					</p>
-					<p style="color: rgb(255, 255, 255); font-size: 18px; font-weight: bold; padding-left: 15px; width: auto">
+					<p style="color: rgb(30, 30, 30); font-size: 18px; font-weight: bold; padding-left: 15px; width: auto">
 						Downloads
 					</p>
 					<p
 						style="
-							color: rgb(255, 255, 255);
+							color: rgb(30, 30, 30);
 							font-size: 18px;
 							font-weight: normal;
 							padding-left: 15px;
@@ -80,7 +77,7 @@ class PackageDetails extends AspkgElement {
 					</p>
 					<p
 						style="
-							color: rgb(255, 255, 255);
+							color: rgb(30, 30, 30);
 							font-size: 18px;
 							font-weight: bold;
 							padding-left: 15px;
@@ -94,7 +91,7 @@ class PackageDetails extends AspkgElement {
 						id="pkg-github-link"
 						href="https://github.com/aspkg/example"
 						style="
-							color: rgb(255, 255, 255);
+							color: rgb(30, 30, 30);
 							font-size: 18px;
 							padding-left: 15px;
 							height: 27px;
@@ -107,7 +104,7 @@ class PackageDetails extends AspkgElement {
 					</a>
 					<p
 						style="
-							color: rgb(255, 255, 255);
+							color: rgb(30, 30, 30);
 							font-size: 18px;
 							font-weight: bold;
 							padding-left: 15px;
@@ -122,7 +119,7 @@ class PackageDetails extends AspkgElement {
 						id="pkg-issues"
 						href="https://github.com/aspkg/example"
 						style="
-							color: rgb(255, 255, 255);
+							color: rgb(30, 30, 30);
 							font-size: 18px;
 							padding-left: 15px;
 							height: 27px;
@@ -135,7 +132,7 @@ class PackageDetails extends AspkgElement {
 					</a>
 					<p
 						style="
-							color: rgb(255, 255, 255);
+							color: rgb(30, 30, 30);
 							font-size: 18px;
 							font-weight: bold;
 							padding-left: 15px;
@@ -147,35 +144,35 @@ class PackageDetails extends AspkgElement {
 					</p>
 					<p
 						id="pkg-dependencies"
-						style="color: rgb(255, 255, 255); font-size: 18px; font-weight: normal; padding-left: 15px; width: auto"
+						style="color: rgb(30, 30, 30); font-size: 18px; font-weight: normal; padding-left: 15px; width: auto"
 					>
 						-
 					</p>
-					<p style="color: rgb(255, 255, 255); font-size: 18px; font-weight: bold; padding-left: 15px; width: auto">
+					<p style="color: rgb(30, 30, 30); font-size: 18px; font-weight: bold; padding-left: 15px; width: auto">
 						Dev Dependencies
 					</p>
 					<p
 						id="pkg-dev-dependencies"
-						style="color: rgb(255, 255, 255); font-size: 18px; font-weight: normal; padding-left: 15px; width: auto"
+						style="color: rgb(30, 30, 30); font-size: 18px; font-weight: normal; padding-left: 15px; width: auto"
 					>
 						-
 					</p>
-					<p style="color: rgb(255, 255, 255); font-size: 18px; font-weight: bold; padding-left: 15px; width: auto">
+					<p style="color: rgb(30, 30, 30); font-size: 18px; font-weight: bold; padding-left: 15px; width: auto">
 						License
 					</p>
 					<p
 						id="pkg-license"
-						style="color: rgb(255, 255, 255); font-size: 18px; font-weight: normal; padding-left: 15px; width: auto"
+						style="color: rgb(30, 30, 30); font-size: 18px; font-weight: normal; padding-left: 15px; width: auto"
 					>
 						-
 					</p>
-					<p style="color: rgb(255, 255, 255); font-size: 18px; font-weight: normal; padding-left: 15px">
+					<p style="color: rgb(30, 30, 30); font-size: 18px; font-weight: normal; padding-left: 15px">
 						<a class="btn btn-primary" role="button" href="https://stackblitz.com/">Demo</a>
 					</p>
 				</div>
 				<h1
 					id="pkg-title"
-					style="color: rgb(255, 255, 255); padding-left: 30px; margin-top: -104px; font-weight: bold; width: 69%"
+					style="color: rgb(30, 30, 30); padding-left: 30px; margin-top: -104px; font-weight: bold; width: 69%"
 				>
 					-----
 				</h1>
@@ -195,7 +192,7 @@ class PackageDetails extends AspkgElement {
 				<div class="col">
 					<div></div>
 				</div>
-				<span style="color: rgb(255, 255, 255); font-size: 15px; padding-left: 30px; min-width: 0px; max-width: 69%">
+				<span style="color: rgb(30, 30, 30); font-size: 15px; padding-left: 30px; min-width: 0px; max-width: 69%">
 					<img src="assets/img/avatar.jpg" style="width: 30px; border-radius: 57px; margin-right: 8px" />
 					Jairus Tanaka
 				</span>
@@ -210,7 +207,7 @@ class PackageDetails extends AspkgElement {
 							margin-right: 0px;
 							padding-top: 0px;
 							padding-right: 0px;
-							color: rgb(204, 204, 204);
+							color: rgb(55, 55, 55);
 							margin-left: 0px;
 							font-size: 13.125px;
 						"
