@@ -59,22 +59,6 @@ class PackageDetails extends AspkgElement {
 							-
 						</span>
 					</p>
-					<p style="color: rgb(30, 30, 30); font-size: 18px; font-weight: bold; padding-left: 15px; width: auto">
-						Downloads
-					</p>
-					<p
-						style="
-							color: rgb(30, 30, 30);
-							font-size: 18px;
-							font-weight: normal;
-							padding-left: 15px;
-							width: auto;
-							margin-bottom: 16px;
-						"
-						href="https://github.com/aspkg/example"
-					>
-						-
-					</p>
 					<p
 						style="
 							color: rgb(30, 30, 30);
