@@ -1,4 +1,4 @@
-import { Octokit } from 'https://cdn.skypack.dev/@octokit/core'
+//import { Octokit } from 'https://cdn.skypack.dev/@octokit/core'
 
 import { Asdom } from './node_modules/asdom/glue/index.js'
 import { ECMAssembly } from './node_modules/ecmassembly/index.js'
@@ -50,10 +50,10 @@ async function runLogin() {
 		console.log('Logged in.')
 		const token = getCookie('token')
 		console.log('Token: ', token)
-		const octokit = new Octokit({ auth: token })
+		//const octokit = new Octokit({ auth: token })
 		const gh_avatar_icon = document.getElementById('gh-avatar-icon')
 
-		const user = await octokit.request('GET /user')
+		//const user = await octokit.request('GET /user')
 
 		gh_avatar_icon.innerHTML = `<img src="assets/img/avatar.jpg" style="width: 30px;border-radius: 100%;margin-left: 10px;margin-left: -1px;margin-bottom: 0px;margin-top: -1px;padding-right: 0px;">`
 
@@ -187,8 +187,4 @@ function getCookie(name) {
 	const value = `; ${document.cookie}`
 	const parts = value.split(`; ${name}=`)
 	if (parts.length === 2) return parts.pop().split(';').shift()
-}
-
-function decodeBase64(data) {
-	return window.atob(data)
 }
