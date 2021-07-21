@@ -7,7 +7,7 @@ import { instantiate } from './node_modules/@assemblyscript/loader/index.js'
 main()
 
 async function main() {
-    //await runASModule()
+    await runASModule()
 
 	console.log('Running Aspkg...')
 	console.log('Pathname: ', location.pathname)
@@ -74,7 +74,7 @@ async function runLogin() {
 }
 
 async function runPackage() {
-    const pkgData = await (await fetch(`/api-get${location.search}`)).json()
+    const pkgData = await (await fetch(`http://localhost:3030/api-get${location.search}`)).json()
 
     const pkg = pkgData
 
