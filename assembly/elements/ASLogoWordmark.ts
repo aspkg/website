@@ -5,7 +5,7 @@ class ASLogoWordmark extends AspkgElement {
 	static observedAttributes: string[] = []
 
 	template(): string {
-		const hostSelector = this.shadowRoot != null ? ':host' : 'nav-bar'
+		const hostSelector = this.shadowRoot != null ? ':host' : this.tagName.toLowerCase()
 
 		return /*html*/ `
 			<svg viewBox="0 0 768 256">
