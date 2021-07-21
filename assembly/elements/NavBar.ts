@@ -46,6 +46,7 @@ class NavBar extends AspkgElement {
 					box-sizing: border-box;
 					height: 4.6rem;
 					padding: 0.7rem 1.5rem;
+					border-bottom: 1px solid #eaecef;
 				}
 
 				.logo {
@@ -65,7 +66,7 @@ class NavBar extends AspkgElement {
 				}
 
 				.custom-search-input {
-					/* From the styles from assemblyscript's site. */
+					/* Styles from assemblyscript doc site's search input. */
 					cursor: text;
 					width: 10rem;
 					height: 2rem;
@@ -81,10 +82,10 @@ class NavBar extends AspkgElement {
 					background: #fff url(https://www.assemblyscript.org/assets/img/search.83621669.svg) .6rem .5rem no-repeat;
 					background-size: 1rem;
 
-					/* Disable the indent that comes with the original design. */
-					text-indent: 0;
-
+					/*Custom additions to make it look identical to AS site:*/
+					text-indent: 0; /* Disable the indent that comes with the original design. */
 					margin-right: 1.5rem;
+					min-height: 34px; /*For some reason the above rem height does not match AS website, so using px here to match exactly.*/
 				}
 
 				.custom-search-input:focus {
