@@ -43,11 +43,6 @@ async function runASModule() {
 	// Now execute the Wasm module. Make the Wasm module was compiled with `--explicitStart`.
 	exports._start()
 
-	if (location.search.includes('code')) {
-		await fetch(`http://localhost:3000/api-login`)
-		console.log(document.cookie)
-	}
-
 	if (getCookie('token')) {
 		console.log('Logged in.')
 		const token = getCookie('token')
@@ -145,7 +140,7 @@ async function runPackage() {
 
 	pkgReadme.innerHTML = marked(readme)
 
-	pkgTitle.innerText = pkg.name
+	pkgTitle.innerText = pkg['name']
 
 	pkgVersion.innerText = `v${pkg.version}`
 
