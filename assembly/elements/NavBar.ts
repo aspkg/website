@@ -34,6 +34,17 @@ class NavBar extends AspkgElement {
 				<a class="btn action-button loginBtn nav-btn" role="button" id="gh-avatar-icon" href="http://localhost:3000/login">
 					<i class="icon-login"></i>
 				</a>
+				<div id="user-dropdown">
+					<div id="user-dropdown-body" hidden="true">
+						<a class="user-dropdown-items">Jairus Tanaka</a>
+						<br>
+						<a class="user-dropdown-items">Packages</a>
+						<br>
+						<a class="user-dropdown-items">Profile</a>
+						<br>
+						<a class="user-dropdown-items">Logout</a>
+					</div>
+				</div>
 			</nav>
 
 			<style>
@@ -46,7 +57,7 @@ class NavBar extends AspkgElement {
 					box-sizing: border-box;
 					height: 4.6rem;
 					padding: 0.7rem 1.5rem;
-					border-bottom: 1px solid #eaecef;
+					border-bottom: 1px solid #E6E6E6;
 				}
 
 				.logo {
@@ -119,6 +130,19 @@ class NavBar extends AspkgElement {
 				.nav-btn:focus,
 				.nav-btn:hover {
 					color: #027acc;
+				}
+				#user-dropdown {
+					position: absolute;
+					top: 4.6rem;
+					right: 15px;
+				}
+				#user-dropdown-body {
+					height: 250px;
+					width: 200px;
+					background-color: rgb(255, 255, 255);
+					border-style: solid;
+					border-width: 1px;
+					border-color: rgb(191, 191, 191);
 				}
 			</style>
         `
