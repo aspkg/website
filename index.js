@@ -76,6 +76,7 @@ async function runASModule() {
 }
 
 async function runPackage() {
+	
 	const pkg = await (await fetch(`http://localhost:3000/api-get${location.search}`)).json()
 
 	const gh_owner = pkg['repository']['url']
