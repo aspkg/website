@@ -57,11 +57,6 @@ app.listen(3000, async (err, address) => {
 	console.log('Listening on: ', address)
 })
 
-app.get('/', async (req, res) => {
-	res.type('html')
-	res.send(await fs.promises.readFile('./index.html'))
-})
-
 // Package Searching
 app.get('/search', async (req, res) => {
 	const query = req.query['query']
@@ -77,11 +72,15 @@ app.get('/login', async (req, res) => {
 	res.redirect(`https://github.com/login/oauth/authorize?client_id=${clientId}`)
 })
 
-app.get('/api-logout', async (req, res) => {
+async function logout(req, res) {
 	// Erasing token logs the user out.
 	res.clearCookie('token')
 	res.send('Logged out.')
-})
+}
+
+app.get('/logout', logout)
+
+app.get('/api-logout', logout)
 
 app.get('/api-login', async (req, res) => {
 	if (req.query.code && req.query.token == null) {
@@ -105,7 +104,8 @@ app.get('/api-login', async (req, res) => {
 
 		res.setCookie('token', token)
 	}
-	res.redirect('http://localhost:5000/')
+
+	res.redirect('http://localhost:3000/')
 })
 
 app.post('/api-publish', async (req, res) => {
