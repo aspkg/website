@@ -1,3 +1,4 @@
+.vscode
 *.lock
 *lock*
 node_modules
