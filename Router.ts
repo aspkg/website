@@ -7,7 +7,7 @@ export class RouteHandlers {
 	post: Map<string, Array<Handler>> = new Map()
 }
 
-export class Router {
+export class HttpRouter {
 	handlers: RouteHandlers = new RouteHandlers()
 
 	get(path: string, handler: Handler) {

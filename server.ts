@@ -4,7 +4,7 @@ import { URL } from 'url'
 // import ReziDB from 'rezidb'
 import dotenv from 'dotenv'
 import fetch from 'undici-fetch'
-import { Router } from './Router'
+import { HttpRouter } from './Router'
 
 // Database
 // const db = new ReziDB({
@@ -29,7 +29,7 @@ console.log('env vars:', clientId, clientSecret)
 const server = new Server()
 server.listen(3000, () => console.log('listening on http://localhost:3000'))
 
-const router = new Router()
+const router = new HttpRouter()
 router.listen(server)
 
 // catch-all
@@ -37,8 +37,10 @@ router.get('*', (url, req, res) => {
 	// TODO
 	console.log('catch all')
 
-	// TODO ...implement static serving...
-	res.write('Home page!')
+	// TODO ...implement static serving so we can stick this HTML back into index.html...
+	res.write(`
+		<h1>Home page!<h1>
+	`)
 	res.end()
 })
 
