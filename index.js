@@ -6,10 +6,12 @@ import { instantiate } from './node_modules/@assemblyscript/loader/index.js'
 
 main()
 
-let octokit
+const isDev = !location.host.includes('aspkg.dev')
+const host = isDev ? location.host : 'localhost:3000'
 
 async function main() {
-	await runASModule()
+	await startASModule()
+	await authAndDomStuffCoupledTogether()
 
 	console.log('Running Aspkg...')
 	console.log('Pathname: ', location.pathname)
@@ -52,7 +54,10 @@ async function main() {
 	runPackage()
 }
 
-async function runASModule() {
+/**
+ * This function does one thing and does it well: starts the AssemblyScript module.
+ */
+async function startASModule() {
 	// Create an Asdom instance that has the glue code for DOM APIs.
 	const asdom = new Asdom()
 
@@ -73,6 +78,41 @@ async function runASModule() {
 
 	// Now execute the Wasm module. Make the Wasm module was compiled with `--explicitStart`.
 	exports._start()
+}
+
+/**
+ * TODO, databse auth stuff should ideally not be intertwined with DOM rendering like it currently is here in this function.
+ */
+async function authAndDomStuffCoupledTogether() {
+	if (getCookie('token')) {
+		console.log('Logged in.')
+		const token = getCookie('token')
+		console.log('Token: ', token)
+		const octokit = new Octokit({ auth: token })
+		const gh_avatar_icon = document.getElementById('gh-avatar-icon')
+
+		const user = await octokit.request('GET /user')
+
+		const userAvatar = user.data.avatar_url
+
+		const userName = user.data.name
+
+		gh_avatar_icon.innerHTML = `<img src="${userAvatar}" style="width: 30px;border-radius: 100%;margin-left: 10px;margin-left: -1px;margin-bottom: 0px;margin-top: -1px;padding-right: 0px;">`
+
+		// Want to make a drop-down with the following options:
+		//             V (user icon)
+		//            😎
+		//  __________/\___
+		// |Username     |
+		// |Add a package|
+		// |Settings     |
+		// |Sign out     |
+		// ---------------
+
+		// Signout is easy. Just delete the `token` cookie and `location.reload()`
+	} else {
+		console.log('Not Logged In')
+	}
 }
 
 async function runPackage() {

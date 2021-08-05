@@ -57,7 +57,7 @@ class NavBar extends AspkgElement {
 					box-sizing: border-box;
 					height: 4.6rem;
 					padding: 0.7rem 1.5rem;
-					border-bottom: 1px solid #E6E6E6;
+          border-bottom: 1px solid #E6E6E6;
 				}
 
 				.logo {
