@@ -7,9 +7,9 @@
 	"authors": "https://github.com/aspkg/website/graphs/contributors",
 	"main": "server.js",
 	"scripts": {
-		"start": "node server",
+		"start": "npm run dev",
 		"test": "node tests",
-		"dev": "npm run asbuild:untouched",
+		"dev": "npm run asbuild:untouched && ts-node server",
 		"build": "npm run asbuild:untouched && npm run asbuild:optimized",
 		"asbuild:untouched": "asc assembly/index.ts --explicitStart --exportRuntime --exportTable --target debug",
 		"asbuild:optimized": "asc assembly/index.ts --explicitStart --exportRuntime --exportTable --target release",
