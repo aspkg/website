@@ -35,7 +35,7 @@
 		"argon2": "^0.28.2",
 		"as-console": "^6.0.0",
 		"as-fetch": "^1.0.8",
-		"asdom": "^0.1.13",
+		"asdom": "^0.2.1",
 		"assemblyscript": "^0.19.7",
 		"blake3": "^2.1.4",
 		"bufferutil": "^4.0.3",

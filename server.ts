@@ -1,5 +1,7 @@
-import { createServer, ServerResponse, IncomingMessage, Server } from 'http'
+import { ServerResponse, Server } from 'http'
 import { URL } from 'url'
+import path from 'path'
+import fs from 'fs'
 // import * as queryString from 'query-string'
 // import ReziDB from 'rezidb'
 import dotenv from 'dotenv'
@@ -34,14 +36,63 @@ router.listen(server)
 
 // catch-all
 router.get('*', (url, req, res) => {
-	// TODO
 	console.log('catch all')
+	console.log('request ', req.url)
 
-	// TODO ...implement static serving so we can stick this HTML back into index.html...
-	res.write(`
-		<h1>Home page!<h1>
-	`)
-	res.end()
+	let filePath = '.' + req.url
+
+	if (filePath == './') {
+		filePath = './index.html'
+	}
+
+	const extname = String(path.extname(filePath)).toLowerCase()
+
+	const mimeTypes = {
+		'.html': 'text/html',
+		'.js': 'text/javascript',
+		'.css': 'text/css',
+		'.json': 'application/json',
+		'.png': 'image/png',
+		'.jpg': 'image/jpg',
+		'.gif': 'image/gif',
+		'.svg': 'image/svg+xml',
+		'.wav': 'audio/wav',
+		'.mp4': 'video/mp4',
+		'.woff': 'application/font-woff',
+		'.ttf': 'application/font-ttf',
+		'.eot': 'application/vnd.ms-fontobject',
+		'.otf': 'application/font-otf',
+		'.wasm': 'application/wasm',
+		// ... add whatever we need ...
+	}
+
+	function isSupportedExtension(ext: string): ext is keyof typeof mimeTypes {
+		return ext in mimeTypes
+	}
+
+	let contentType = 'application/octet-stream'
+
+	if (isSupportedExtension(extname)) contentType = mimeTypes[extname]
+
+	fs.readFile(filePath, function (error, content) {
+		if (error) {
+			if (error.code == 'ENOENT') {
+				// TODO, client-side 404 page.
+				// fs.readFile('./404.html', function (error, content) {
+				// 	res.writeHead(404, { 'Content-Type': 'text/html' })
+				// 	res.end(content, 'utf-8')
+				// })
+				res.writeHead(404, { 'Content-Type': 'text/html' })
+				res.end('<h1>404 not found</h1>', 'utf-8')
+			} else {
+				res.writeHead(500)
+				res.end('500 error: ' + error.code + ' ..\n')
+			}
+		} else {
+			res.writeHead(200, { 'Content-Type': contentType })
+			res.end(content, 'utf-8')
+		}
+	})
 })
 
 router.get('/login', (url, req, res) => {
