@@ -1,13 +1,11 @@
 // Export AssemblyScript-side glue code or not everything will work (for example the customElements API).
 export * from '../node_modules/asdom/assembly/glue'
 
-import { log } from '../node_modules/asdom/assembly/imports'
 import { document, Element } from '../node_modules/asdom/assembly'
 import { setTimeout } from '../node_modules/ecmassembly/assembly/index'
 
 // Registers all the custom elements
 import './elements/index'
-import { RouteHandler, Router } from './UrlRouter'
 
 main()
 
@@ -16,22 +14,7 @@ function main(): void {
 	const app = createElement('aspkg-app')
 	document.body!.appendChild(app)
 
-	defineRoutes()
 	removeLoadAnimation()
-}
-
-class MyHandler extends RouteHandler {
-	enter(): void {
-		log('enter any route')
-	}
-	leave(): void {
-		log('leave any route')
-	}
-}
-
-function defineRoutes(): void {
-	const router: Router = new Router()
-	router.with('*', new MyHandler())
 }
 
 let loader: Element

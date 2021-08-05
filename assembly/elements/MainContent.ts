@@ -1,13 +1,12 @@
 import { clearInterval, setInterval } from '../../node_modules/ecmassembly/assembly'
 import { customElements, HTMLElement } from '../../node_modules/asdom/assembly/index'
+import { log } from '../../node_modules/asdom/assembly/imports'
 import { AspkgElement } from './AspkgElement'
+import { RouteHandler, Router } from '../UrlRouter'
 
 import './pages/Home'
 import './pages/FourOhFour'
 import './pages/PackageDetails'
-
-let ptr: usize = 0
-let self: MainContent
 
 class Route {
 	path: string
@@ -20,6 +19,51 @@ const routes: Array<Route> = [
 	{ path: '/package', element: 'package-details' },
 ]
 
+class CatchAllRoute extends RouteHandler {
+	constructor(public content: MainContent) {
+		super()
+	}
+
+	enter(): void {
+		log('enter any route')
+	}
+	leave(): void {
+		log('leave any route')
+	}
+}
+
+class HomeRoute extends RouteHandler {
+	constructor(public content: MainContent) {
+		super()
+	}
+
+	enter(): void {
+		log('enter / route')
+		this.content.__route = routes[0]
+		this.content.update()
+	}
+	leave(): void {
+		log('leave / route')
+	}
+}
+
+class PackageDetailsRoute extends RouteHandler {
+	constructor(public content: MainContent) {
+		super()
+	}
+
+	enter(): void {
+		log('enter /package route')
+		this.content.__route = routes[2]
+		this.content.update()
+	}
+	leave(): void {
+		log('leave /package route')
+	}
+}
+
+export const router: Router = new Router()
+
 class MainContent extends AspkgElement {
 	static observedAttributes: string[] = []
 
@@ -31,33 +75,25 @@ class MainContent extends AspkgElement {
 	private __pageContainer: HTMLElement | null = null
 
 	// TODO the initial value should be set based on the current route.
-	private __route: Route = routes[1]
+	__route: Route = routes[1]
 
 	private __interval: i32 = -1
 
 	connectedCallback(): void {
 		super.connectedCallback()
 
+		router.with('/', new HomeRoute(this))
+		router.with('/package', new PackageDetailsRoute(this))
+		router.with('*', new CatchAllRoute(this))
+		router.start()
+
 		this.__pageContainer = this.querySelector('.page-container')! as HTMLElement
 
 		this.update()
-
-		ptr = this.__ptr__
-
-		// On route changes, we'll change which page we render in the main content area.
-		// For now, we we are emulating a random route change to show the proof of concept.
-		// TODO put real routing in place (requires bindings for History API and similar).
-		//this.__interval = setInterval(() => {
-		self = changetype<MainContent>(ptr)
-
-		self.__route = routes[(routes.findIndex((r) => self.__route.path === r.path) + 1) % routes.length]
-
-		self.update()
-		//}, 2000)
 	}
 
 	disconnectedCallback(): void {
-		clearInterval(this.__interval)
+		router.stop()
 	}
 
 	update(): void {
