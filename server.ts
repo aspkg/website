@@ -37,42 +37,25 @@ router.listen(server)
 // catch-all
 router.get('*', (url, req, res) => {
 	console.log('catch all')
-	console.log('request ', req.url)
+	console.log('request ', url.pathname)
 
-	let filePath = '.' + req.url
+	// IDEA: Make static serving into a plugin (similar to how fastify-static is a plugin) instead of inlining it all here.
 
-	if (filePath == './') {
-		filePath = './index.html'
+	let filePath = '.' + url.pathname
+
+	// Default serving of index.html files.
+	if (filePath.endsWith('/')) {
+		filePath += 'index.html'
 	}
 
 	const extname = String(path.extname(filePath)).toLowerCase()
 
-	const mimeTypes = {
-		'.html': 'text/html',
-		'.js': 'text/javascript',
-		'.css': 'text/css',
-		'.json': 'application/json',
-		'.png': 'image/png',
-		'.jpg': 'image/jpg',
-		'.gif': 'image/gif',
-		'.svg': 'image/svg+xml',
-		'.wav': 'audio/wav',
-		'.mp4': 'video/mp4',
-		'.woff': 'application/font-woff',
-		'.ttf': 'application/font-ttf',
-		'.eot': 'application/vnd.ms-fontobject',
-		'.otf': 'application/font-otf',
-		'.wasm': 'application/wasm',
-		// ... add whatever we need ...
-	}
-
-	function isSupportedExtension(ext: string): ext is keyof typeof mimeTypes {
-		return ext in mimeTypes
-	}
-
+	// The default mime type.
 	let contentType = 'application/octet-stream'
 
 	if (isSupportedExtension(extname)) contentType = mimeTypes[extname]
+
+	console.log('File to serve:', filePath)
 
 	fs.readFile(filePath, function (error, content) {
 		if (error) {
@@ -239,3 +222,26 @@ function setCookie(res: ServerResponse, key: string, value: string): void {
 // 	console.log(err)
 // 	next()
 // })
+
+const mimeTypes = {
+	'.html': 'text/html',
+	'.js': 'text/javascript',
+	'.css': 'text/css',
+	'.json': 'application/json',
+	'.png': 'image/png',
+	'.jpg': 'image/jpg',
+	'.gif': 'image/gif',
+	'.svg': 'image/svg+xml',
+	'.wav': 'audio/wav',
+	'.mp4': 'video/mp4',
+	'.woff': 'application/font-woff',
+	'.ttf': 'application/font-ttf',
+	'.eot': 'application/vnd.ms-fontobject',
+	'.otf': 'application/font-otf',
+	'.wasm': 'application/wasm',
+	// ... add whatever we need ...
+}
+
+function isSupportedExtension(ext: string): ext is keyof typeof mimeTypes {
+	return ext in mimeTypes
+}
