@@ -3,8 +3,10 @@ import { ServerResponse, IncomingMessage, Server } from 'http'
 export type Handler = (url: URL, req: IncomingMessage, res: ServerResponse) => void
 
 export class RouteHandlers {
-	get: Map<string, Array<Handler>> = new Map()
-	post: Map<string, Array<Handler>> = new Map()
+	get: Map<string, Handler[]> = new Map()
+	post: Map<string, Handler[]> = new Map()
+	put: Map<string, Handler[]> = new Map()
+	// ...
 }
 
 export class HttpRouter {
@@ -28,37 +30,30 @@ export class HttpRouter {
 		server.on('request', (req: IncomingMessage, res: ServerResponse) => {
 			const _url = req.url
 
+			// When do we not have a URL? The type is `string | undefined`. Maybe that's for non-HTTP servers?
 			if (!_url) return
 
 			const origin = `http://${req.headers.host}`
 			const url = new URL(_url, origin)
 
-			console.log('method:', req.method)
+			// The following surely will change. It is simple right now and
+			// only matches against specific paths like /foo/bar but it does
+			// not yet support neat features like /foo/:id where :id would
+			// cause it to grab any value at that position and pass it to a
+			// handler in an `id` variable.
 
-			// TODO Make the following more DRY
+			let routeHandlers: Map<string, Handler[]> = new Map()
+			let handlers: Handler[] = []
 
-			if (req.method === 'GET') {
-				if (this.handlers.get.has(url.pathname)) {
-					const handlers = this.handlers.get.get(url.pathname)!
-					for (let i = 0, l = handlers.length; i < l; i++) handlers[i](url, req, res)
-				}
-				if (this.handlers.get.has('*')) {
-					const handlers = this.handlers.get.get('*')!
-					for (let i = 0, l = handlers.length; i < l; i++) handlers[i](url, req, res)
-				}
-			} else if (req.method === 'POST') {
-				if (this.handlers.post.has(url.pathname)) {
-					const handlers = this.handlers.post.get(url.pathname)!
-					for (let i = 0, l = handlers.length; i < l; i++) handlers[i](url, req, res)
-				}
-				if (this.handlers.post.has('*')) {
-					const handlers = this.handlers.post.get('*')!
-					for (let i = 0, l = handlers.length; i < l; i++) handlers[i](url, req, res)
-				}
-			} else if (req.method === 'PUT') {
-				// ...
-			}
+			if (req.method === 'GET') routeHandlers = this.handlers.get
+			else if (req.method === 'POST') routeHandlers = this.handlers.post
+			// else if (req.method === 'PUT') ...
 			// ...
+
+			if (routeHandlers.has(url.pathname)) handlers = routeHandlers.get(url.pathname)!
+			else if (routeHandlers.has('*')) handlers = routeHandlers.get('*')!
+
+			for (let i = 0, l = handlers.length; i < l; i++) handlers[i](url, req, res)
 		})
 	}
 }

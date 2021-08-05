@@ -34,50 +34,6 @@ server.listen(3000, () => console.log('listening on http://localhost:3000'))
 const router = new HttpRouter()
 router.listen(server)
 
-// catch-all
-router.get('*', (url, req, res) => {
-	console.log('catch all')
-	console.log('request ', url.pathname)
-
-	// IDEA: Make static serving into a plugin (similar to how fastify-static is a plugin) instead of inlining it all here.
-
-	let filePath = '.' + url.pathname
-
-	// Default serving of index.html files.
-	if (filePath.endsWith('/')) {
-		filePath += 'index.html'
-	}
-
-	const extname = String(path.extname(filePath)).toLowerCase()
-
-	// The default mime type.
-	let contentType = 'application/octet-stream'
-
-	if (isSupportedExtension(extname)) contentType = mimeTypes[extname]
-
-	console.log('File to serve:', filePath)
-
-	fs.readFile(filePath, function (error, content) {
-		if (error) {
-			if (error.code == 'ENOENT') {
-				// TODO, client-side 404 page.
-				// fs.readFile('./404.html', function (error, content) {
-				// 	res.writeHead(404, { 'Content-Type': 'text/html' })
-				// 	res.end(content, 'utf-8')
-				// })
-				res.writeHead(404, { 'Content-Type': 'text/html' })
-				res.end('<h1>404 not found</h1>', 'utf-8')
-			} else {
-				res.writeHead(500)
-				res.end('500 error: ' + error.code + ' ..\n')
-			}
-		} else {
-			res.writeHead(200, { 'Content-Type': contentType })
-			res.end(content, 'utf-8')
-		}
-	})
-})
-
 router.get('/login', (url, req, res) => {
 	redirect(res, `https://github.com/login/oauth/authorize?client_id=${clientId}`)
 })
@@ -124,6 +80,60 @@ router.get('/api-login', async (url, req, res) => {
 	redirect(res, 'http://localhost:3000')
 })
 
+router.get('/api-get', (url, req, res) => {
+	const pkgName = url.searchParams.get('name')
+
+	if (!pkgName) {
+		res.writeHead(200, { 'Content-Type': mimeTypes['.json'] })
+		return res.end('{}')
+	}
+
+	// TODO
+	// db.get(pkgName).then(result => {
+	// 	res.writeHead(200, { 'Content-Type': mimeTypes['.json'] })
+	// 	res.end(JSON.stringify(result) || '{}')
+	// })
+})
+
+// catch-all (at the end, so other handlers have the oppotunity to handle routes first).
+router.get('*', (url, req, res) => {
+	// IDEA: Make static serving into a plugin (similar to how fastify-static is a plugin) instead of inlining it all here.
+
+	let filePath = '.' + url.pathname
+
+	// Default serving of index.html files.
+	if (filePath.endsWith('/')) filePath += 'index.html'
+
+	const extname = String(path.extname(filePath)).toLowerCase()
+
+	// The default mime type.
+	let contentType = 'application/octet-stream'
+
+	if (isSupportedExtension(extname)) contentType = mimeTypes[extname]
+
+	console.log('File to serve:', filePath)
+
+	fs.readFile(filePath, function (error, content) {
+		if (error) {
+			if (error.code == 'ENOENT') {
+				// TODO, client-side 404 page.
+				// fs.readFile('./404.html', function (error, content) {
+				// 	res.writeHead(404, { 'Content-Type': 'text/html' })
+				// 	res.end(content, 'utf-8')
+				// })
+				res.writeHead(404, { 'Content-Type': 'text/html' })
+				res.end('<h1>404 not found</h1>', 'utf-8')
+			} else {
+				res.writeHead(500)
+				res.end('500 error: ' + error.code + ' ..\n')
+			}
+		} else {
+			res.writeHead(200, { 'Content-Type': contentType })
+			res.end(content, 'utf-8')
+		}
+	})
+})
+
 function redirect(res: ServerResponse, url: string): void {
 	res.statusCode = 302
 	res.setHeader('Location', url)
@@ -153,26 +163,6 @@ function setCookie(res: ServerResponse, key: string, value: string): void {
 
 // app.register(require('fastify-cors'), {
 // 	// put your options here
-// })
-
-// // Get secrets
-// const clientId = process.env.id
-// const clientSecret = process.env.secret
-
-// console.log(clientId)
-
-// console.log(clientSecret)
-
-// app.listen(3000, async (err, address) => {
-// 	/*closeWithGrace({ delay: 1000 }, async function () {
-//         console.log('Closing...')
-//         tunnel.close()
-//         console.log('Done.')
-//     })
-//     app.addHook('onClose', () => {
-//         tunnel.close()
-//     })*/
-// 	console.log('Listening on: ', address)
 // })
 
 // // Package Searching
@@ -207,11 +197,6 @@ function setCookie(res: ServerResponse, key: string, value: string): void {
 // app.get('/api-search', async (req, res) => {
 // 	if (!req.query['query']) res.send([])
 // 	res.send(await db.search(req.query['query']), req.query.limit || 5)
-// })
-
-// app.get('/api-get', async (req, res) => {
-// 	if (!req.query['name']) return res.send({})
-// 	res.send((await db.get(req.query['name'])) || '{}')
 // })
 
 // app.get('/api-list', async (req, res) => {
