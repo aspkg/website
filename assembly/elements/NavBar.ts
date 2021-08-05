@@ -1,5 +1,16 @@
-import { customElements } from '../../node_modules/asdom/assembly/index'
+import { customElements, Element, EventListener } from '../../node_modules/asdom/assembly/index'
 import { AspkgElement } from './AspkgElement'
+import { router } from './MainContent'
+
+class NavClickHandler extends EventListener {
+	constructor(public path: string) {
+		super()
+	}
+
+	handleEvent(): void {
+		router.go(this.path)
+	}
+}
 
 class NavBar extends AspkgElement {
 	static observedAttributes: string[] = []
@@ -9,6 +20,18 @@ class NavBar extends AspkgElement {
 		this.useShadow = false
 	}
 
+	connectedCallback(): void {
+		super.connectedCallback()
+
+		const homebtn = this.querySelector('.homebtn') as Element
+		// homebtn.addEventListener('click', () => router.go('/')) // TODO not working, compiler crash
+		homebtn.addEventListener('click', new NavClickHandler('/')) // but this works.
+
+		const packagebtn = this.querySelector('.packagebtn') as Element
+		// packagebtn.addEventListener('click', () => router.go('/package')) // TODO not working, compiler crash
+		packagebtn.addEventListener('click', new NavClickHandler('/package')) // but this works.
+	}
+
 	template(): string {
 		const hostSelector = this.shadowRoot != null ? ':host' : this.tagName.toLowerCase()
 
@@ -16,6 +39,8 @@ class NavBar extends AspkgElement {
 			<nav class="navbar-expand-lg fixed-top" id="mainNav">
 				<img class="logo" src="assets/img/logo.svg" />
 				<span class="site-name">AssemblyScript Packages</span>
+				<a class="btn nav-btn homebtn">(temporary) Home</a>
+				<a class="btn nav-btn packagebtn">(temporary) Package Details</a>
 				<div class="collapse navbar-collapse" id="navbarResponsive-2"></div>
 				<div class="mt-5 mt-md-0 search-area">
 					<input
@@ -66,6 +91,7 @@ class NavBar extends AspkgElement {
 				}
 
 				.site-name {
+					margin-right: 2rem;
 					font-size: 1.3rem;
 					font-weight: 600;
 					color: #2c3e50;
