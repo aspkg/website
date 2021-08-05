@@ -39,8 +39,8 @@ class NavBar extends AspkgElement {
 			<nav class="navbar-expand-lg fixed-top" id="mainNav">
 				<img class="logo" src="assets/img/logo.svg" />
 				<span class="site-name">AssemblyScript Packages</span>
-				<button class="homebtn">(temporary) Home</button>
-				<button class="packagebtn">(temporary) Package Details</button>
+				<a class="btn nav-btn homebtn">(temporary) Home</a>
+				<a class="btn nav-btn packagebtn">(temporary) Package Details</a>
 				<div class="collapse navbar-collapse" id="navbarResponsive-2"></div>
 				<div class="mt-5 mt-md-0 search-area">
 					<input
@@ -80,6 +80,7 @@ class NavBar extends AspkgElement {
 				}
 
 				.site-name {
+					margin-right: 2rem;
 					font-size: 1.3rem;
 					font-weight: 600;
 					color: #2c3e50;

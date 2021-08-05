@@ -77,10 +77,14 @@ export class Router extends EventListener {
 			const routeExpression = keys[i]
 			const handler = this.routes.get(routeExpression)
 
-			if (routeExpression === '*' /* || this.lastLocation.match(routeExpression)*/) {
+			if (
+				routeExpression === '*' ||
+				this.lastLocation == routeExpression /*|| this.lastLocation.match(routeExpression)*/
+			) {
 				leaveHandlers.push(handler)
 			}
-			if (routeExpression === '*' /*|| currentLocation.match(routeExpression)*/) {
+
+			if (routeExpression === '*' || currentLocation == routeExpression /*|| currentLocation.match(routeExpression)*/) {
 				enterHandlers.push(handler)
 			}
 		}

@@ -1,4 +1,4 @@
-import { clearInterval, setInterval } from '../../node_modules/ecmassembly/assembly'
+import { logDebug } from '../../node_modules/asdom/assembly/utils'
 import { customElements, HTMLElement } from '../../node_modules/asdom/assembly/index'
 import { log } from '../../node_modules/asdom/assembly/imports'
 import { AspkgElement } from './AspkgElement'
@@ -75,19 +75,17 @@ class MainContent extends AspkgElement {
 	private __pageContainer: HTMLElement | null = null
 
 	// TODO the initial value should be set based on the current route.
-	__route: Route = routes[1]
-
-	private __interval: i32 = -1
+	__route: Route = routes[0]
 
 	connectedCallback(): void {
 		super.connectedCallback()
+
+		this.__pageContainer = this.querySelector('.page-container') as HTMLElement
 
 		router.with('/', new HomeRoute(this))
 		router.with('/package', new PackageDetailsRoute(this))
 		router.with('*', new CatchAllRoute(this))
 		router.start()
-
-		this.__pageContainer = this.querySelector('.page-container')! as HTMLElement
 
 		this.update()
 	}
@@ -98,6 +96,7 @@ class MainContent extends AspkgElement {
 
 	update(): void {
 		const el = this.__route.element
+		logDebug('update: ' + el)
 		this.__pageContainer!.innerHTML = `<${el}></${el}>`
 	}
 
