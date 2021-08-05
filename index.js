@@ -16,12 +16,41 @@ async function main() {
 	console.log('Running Aspkg...')
 	console.log('Pathname: ', location.pathname)
 
-	/*if (location.pathname === '/') {
-		runLogin()
-	} else if (location.pathname === '/') {
-		runPackage()
-		runLogin()
-	}*/
+	if (getCookie('token')) {
+		console.log('Logged in.')
+		const token = getCookie('token')
+		console.log('Token: ', token)
+		octokit = new Octokit({ auth: token })
+		const gh_avatar_icon = document.getElementById('gh-avatar-icon')
+
+		const user_dropdown_body = document.getElementById('user-dropdown-body')
+
+		const user = await octokit.request('GET /user')
+
+		const userAvatar = user.data.avatar_url
+
+		const userName = user.data.name
+
+		gh_avatar_icon.removeAttribute('href')
+
+		gh_avatar_icon.innerHTML = /*html*/`<img src="${userAvatar}" style="width: 30px; border-radius: 100%; margin-left: 10px; margin-left: -1px; margin-bottom: 0px; margin-top: -1px; padding-right: 0px;">`
+
+		gh_avatar_icon.onmouseover = () => {
+			// Show dropdown
+			console.log('Show')
+			user_dropdown_body.hidden = false
+		}
+
+		gh_avatar_icon.onmouseout = () => {
+			// Hide dropdown
+			console.log('Hide')
+			user_dropdown_body.hidden = true
+		}
+		// Signout is easy. Just delete the `token` cookie and `location.reload()`
+	} else {
+		console.log('Not Logged In')
+	}
+
 	runPackage()
 }
 
@@ -87,6 +116,7 @@ async function authAndDomStuffCoupledTogether() {
 }
 
 async function runPackage() {
+	
 	const pkg = await (await fetch(`http://localhost:3000/api-get${location.search}`)).json()
 
 	const gh_owner = pkg['repository']['url']
@@ -105,12 +135,6 @@ async function runPackage() {
 		.toLowerCase()
 		.split('/')[2]
 
-	const token = getCookie('token')
-
-	const octokit = new Octokit({ auth: token })
-
-	const currentUser = await octokit.request('GET /user')
-
 	console.log(`https://api.github.com/users/${gh_owner}`)
 	const packageAuthor = await (
 		await fetch(`https://api.github.com/users/${gh_owner}`, {
@@ -118,17 +142,13 @@ async function runPackage() {
 		})
 	).json()
 
-	const userAvatar = currentUser.data.avatar_url
-
-	const userName = currentUser.data.name
-
 	const authorAvatar = packageAuthor.avatar_url
 
 	const authorName = packageAuthor.name
 
 	const ghAuthor = document.getElementById('gh-author')
 
-	ghAuthor.innerHTML = `<img src="${authorAvatar}" style="width: 30px; border-radius: 57px; margin-right: 8px" />${authorName}`
+	ghAuthor.innerHTML = /*html*/`<img src="${authorAvatar}" style="width: 30px; border-radius: 57px; margin-right: 8px" />${authorName}`
 
 	const readme = await (await fetch(`https://raw.githubusercontent.com/${gh_owner}/${gh_repo}/master/README.md`)).text()
 
