@@ -111,8 +111,6 @@ router.get('*', (url, req, res) => {
 
 	if (isSupportedExtension(extname)) contentType = mimeTypes[extname]
 
-	console.log('File to serve:', filePath)
-
 	fs.readFile(filePath, function (error, content) {
 		if (error) {
 			if (error.code == 'ENOENT') {
