@@ -4,8 +4,9 @@ import path from 'path'
 import fs from 'fs'
 // import * as queryString from 'query-string'
 // import ReziDB from 'rezidb'
+// @ts-ignore
 import dotenv from 'dotenv'
-import fetch from 'undici-fetch'
+import fetch from 'cross-fetch'
 import { HttpRouter } from './Router'
 
 // Database
